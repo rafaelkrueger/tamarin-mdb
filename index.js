@@ -4,7 +4,6 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 const app = express()
 const mongoose = require("mongoose");
-const Customer = require("./models/customer")
 const Message = require("./models/message")
 const PORT = process.env.PORT || 8080
 
@@ -45,7 +44,6 @@ app.post("/set-message", (req,res)=>{
         if(err) console.log(err)
         console.log(message)
     })  
-
 })
 
 app.get("/news",(req, res)=>{
