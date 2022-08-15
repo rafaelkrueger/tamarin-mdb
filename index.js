@@ -3,7 +3,7 @@ const axios = require("axios")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 const app = express()
-const PORT = process.env.port || 8080
+const PORT = process.env.PORT || 8080
 
 //Middlewares
 app.use(express.json())
