@@ -3,6 +3,9 @@ const axios = require("axios")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 const app = express()
+const mongoose = require("mongoose");
+const Customer = require("./models/customer")
+const Message = require("./models/message")
 const PORT = process.env.PORT || 8080
 
 //Middlewares
@@ -15,10 +18,34 @@ app.use((req, res, next)=>{
     next()
 })
 
-//options
+//Database Connection
+mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@cluster0.w2kdpw1.mongodb.net/?retryWrites=true&w=majority",
+{useNewUrlParser: true, 
+    useUnifiedTopology: true}).then(()=>{
+    console.log("Banco conectado!")
+}).catch((err)=>{
+    console.log(err)
+})
 
+
+//Access Route
 app.get("/", (req, res)=>{
     res.send("ola")
+})
+
+app.post("/set-message", (req,res)=>{
+    let {name, email, cellphone, message } = req.body  
+    const newMessage = new Message({
+    name:name,
+    email:email,
+    cellphone:cellphone,
+    message:message
+    })
+    newMessage.save((err, message)=>{
+        if(err) console.log(err)
+        console.log(message)
+    })  
+
 })
 
 app.get("/news",(req, res)=>{
