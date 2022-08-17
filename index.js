@@ -49,17 +49,44 @@ app.post("/set-message", (req,res)=>{
 
 
 app.post("/set-user", (req,res)=>{
-    let {name, email, number, message } = req.body  
+
+    let UserArray = []
+    let CardapioArray = []
+    let PedidosArray = []
+    let OrcamentoArray = []
+    let MessageArray = []
+
     const newUser = new User({
-    name:name,
-    email:email,
-    number:number,
-    message:message
+    logo:" ",
+    name:" ",
+    email:" ",
+    password:" ",
+    number:" ",
+    site:"",
+    users:UserArray,
+    cardapio:CardapioArray,
+    pedidos:PedidosArray,
+    orcamento:OrcamentoArray,
+    message:MessageArray
     })
     newUser.save((err, message)=>{
         if(err) console.log(err)
         console.log(message)
     })  
+})
+
+app.post("/get-user", async (req, res)=>{
+    let {email, password} = req.body  
+
+    const main = async () =>{
+        await sleep(15000)
+        const FindUser = await User.findOne({email:email}).exec((err,user)=>{
+            if(err)console.log(err)
+            res.send(user)
+        })
+    }
+    main();        
+
 })
 
 
