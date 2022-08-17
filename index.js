@@ -18,12 +18,12 @@ app.use((req, res, next)=>{
 })
 
 //Database Connection
-mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@cluster0.w2kdpw1.mongodb.net/?retryWrites=true&w=majority",
+mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@tamarin.3bbedo7.mongodb.net/?retryWrites=true&w=majority",
 {useNewUrlParser: true, 
     useUnifiedTopology: true}).then(()=>{
     console.log("Banco conectado!")
 }).catch((err)=>{
-    console.log(err)
+    console.log(err.message)
 })
 
 
@@ -45,6 +45,9 @@ app.post("/set-message", (req,res)=>{
         console.log(message)
     })  
 })
+
+
+
 
 app.get("/news",(req, res)=>{
     const newsPesquisa = "programming"
