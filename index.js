@@ -33,11 +33,11 @@ app.get("/", (req, res)=>{
 })
 
 app.post("/set-message", (req,res)=>{
-    let {name, email, cellphone, message } = req.body  
+    let {name, email, number, message } = req.body  
     const newMessage = new Message({
     name:name,
     email:email,
-    cellphone:cellphone,
+    number:number,
     message:message
     })
     newMessage.save((err, message)=>{
