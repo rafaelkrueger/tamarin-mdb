@@ -75,7 +75,7 @@ app.post("/set-user", (req,res)=>{
     })  
 })
 
-app.post("/get-user", async (req, res)=>{
+app.get("/get-user", async (req, res)=>{
     let {email, password} = req.body  
 
     const main = async () =>{
