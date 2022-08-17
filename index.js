@@ -5,6 +5,7 @@ const cors = require("cors")
 const app = express()
 const mongoose = require("mongoose");
 const Message = require("./models/message")
+const User = require("./models/Usuario")
 const PORT = process.env.PORT || 8080
 
 //Middlewares
@@ -41,6 +42,21 @@ app.post("/set-message", (req,res)=>{
     message:message
     })
     newMessage.save((err, message)=>{
+        if(err) console.log(err)
+        console.log(message)
+    })  
+})
+
+
+app.post("/set-user", (req,res)=>{
+    let {name, email, number, message } = req.body  
+    const newUser = new User({
+    name:name,
+    email:email,
+    number:number,
+    message:message
+    })
+    newUser.save((err, message)=>{
         if(err) console.log(err)
         console.log(message)
     })  
