@@ -50,6 +50,8 @@ app.post("/set-message", (req,res)=>{
 
 app.post("/set-user", (req,res)=>{
 
+    const {logo, name, email, password, numero, site, user} = req.body
+
     let UserArray = []
     let CardapioArray = []
     let PedidosArray = []
@@ -57,13 +59,13 @@ app.post("/set-user", (req,res)=>{
     let MessageArray = []
 
     const newUser = new User({
-    logo:" ",
-    name:" ",
-    email:" ",
-    password:" ",
-    number:" ",
-    site:"",
-    users:UserArray,
+    logo:logo,
+    name:name,
+    email:email,
+    password:password,
+    number:numero,
+    site:site,
+    users:user,
     cardapio:CardapioArray,
     pedidos:PedidosArray,
     orcamento:OrcamentoArray,
@@ -75,7 +77,7 @@ app.post("/set-user", (req,res)=>{
     })  
 })
 
-app.get("/get-user", async (req, res)=>{
+app.post("/get-user", async (req, res)=>{
     let {email, password} = req.body  
 
     const main = async () =>{
