@@ -79,15 +79,12 @@ app.post("/set-user", (req,res)=>{
 
 app.post("/get-user", async (req, res)=>{
     let {email, password} = req.body  
+    User.find({email:email}).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
 
-    const main = async () =>{
-        await sleep(15000)
-        const FindUser = await User.findOne({email:email}).exec((err,user)=>{
-            if(err)console.log(err)
-            res.send(user)
-        })
-    }
-    main();        
 
 })
 
