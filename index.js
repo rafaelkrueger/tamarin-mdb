@@ -91,6 +91,18 @@ app.post("/get-user", async (req, res)=>{
 
 })
 
+app.get("/empresa/:id", async (req, res)=>{
+
+    const id = req.params.id
+    User.find({_id:req.params.id}).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+
+})
+
+
 
 
 
