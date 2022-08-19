@@ -9,7 +9,13 @@ const userSchema = new Schema({
     number:String,
     site:String,
     users:Array,
-    cardapio:Array,
+    cardapio:{
+        SemAlcool:Array,
+        Alcool:Array,
+        Cervejas:Array,
+        Bedidas:Array,
+        Comidas:Array,
+    },
     pedidos:Array,
     orcamento:Array,
     message:Array

@@ -99,6 +99,16 @@ app.get("/empresa/:id", async (req, res)=>{
 
 })
 
+app.post("/delete-pedido", async (req, res)=>{
+
+    const {empresa, id} = req.body
+    User.deleteOne({_id:empresa, id:id}).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+
+})
 
 
 
