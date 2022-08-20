@@ -124,7 +124,7 @@ app.post("/set-categoria", (req,res)=>{
     const {empresa, category} = req.body
     User.findOneAndUpdate(
         {_id:empresa},
-        {categorias:"leo"}
+        {$push: { categorias:"leo" } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
