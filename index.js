@@ -77,6 +77,16 @@ app.post("/set-user", (req,res)=>{
     })  
 })
 
+
+app.get("/all", (req, res)=>{
+    User.find().then((response)=>{
+        res.send(response)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+})
+
 app.post("/delete-user", (req,res)=>{
     const {id} = req.body
     User.deleteOne({_id:id}).then((response)=>{
@@ -87,14 +97,6 @@ app.post("/delete-user", (req,res)=>{
     })
 })
 
-app.get("/all", (req, res)=>{
-    User.find().then((response)=>{
-        res.send(response)
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-})
 
 app.post("/get-user", async (req, res)=>{
     let {email, password} = req.body  
@@ -128,6 +130,30 @@ app.post("/set-categoria", (req,res)=>{
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
+        console.log(err)
+    })
+
+})
+
+app.post("set-produto/:id", (req, res)=>{
+    const id = req.params.id
+    const { image, product, description, value, category } = req.body
+
+    User.updateOne(
+        {_id:id},
+        {$addToSet: { cardapio: {$each:[{
+            image:image,
+            product:product,
+            description:description,
+            value:value,
+            category:category}]
+        }}
+        }
+        )
+        .then((response)=>{
+        res.send(response)
+        }
+        ).catch((err)=>{
         console.log(err)
     })
 
