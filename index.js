@@ -77,6 +77,15 @@ app.post("/set-user", (req,res)=>{
     })  
 })
 
+app.get("/all", (req, res)=>{
+    User.find().then(()=>{
+        res.send(response)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+})
+
 app.post("/get-user", async (req, res)=>{
     let {email, password} = req.body  
 
