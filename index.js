@@ -136,10 +136,16 @@ app.post("/set-categoria", (req,res)=>{
 })
 
 app.post("/set-produto", (req,res)=>{
-    const {empresa, category} = req.body
+    const {empresa, image, product, description, value, category} = req.body
     User.updateOne(
         {_id:empresa},
-        {$addToSet: { cardapio:category } }
+        {$addToSet: { cardapio: {
+        "image":image,
+        "product":product,
+        "description":description,
+        "value":value,
+        "category":category}
+        }}
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
