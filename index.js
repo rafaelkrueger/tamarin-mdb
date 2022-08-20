@@ -141,12 +141,12 @@ app.post("set-produto/:id", (req, res)=>{
 
     User.updateOne(
         {_id:id},
-        {$addToSet: { cardapio: {$each:[{
-            image:image,
-            product:product,
-            description:description,
-            value:value,
-            category:category}]
+        {$addToSet: { cardapio: {$each:[
+            image,
+            product,
+            description,
+            value,
+            category]
         }}
         }
         )
