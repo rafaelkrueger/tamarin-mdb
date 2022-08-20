@@ -135,18 +135,16 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto", (req, res)=>{
-    const {empresa, image, product, description, value, category } = req.body
-    res.send(empresa)
-    /*User.updateOne({_id:empresa},
-        {$addToSet: { cardapio:image } }
-        )
-        .then((response)=>{
+app.post("/set-produto", (req,res)=>{
+    const {empresa, category} = req.body
+    User.updateOne(
+        {_id:empresa},
+        {$addToSet: { cardapio:category } }
+        ).then((response)=>{
         res.send(response)
-        }
-        ).catch((err)=>{
+    }).catch((err)=>{
         console.log(err)
-    })*/
+    })
 
 })
 
