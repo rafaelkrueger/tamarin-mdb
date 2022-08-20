@@ -122,9 +122,9 @@ app.get("/empresa/:id", async (req, res)=>{
 
 app.post("/set-categoria", (req,res)=>{
     const {empresa, category} = req.body
-    User.updateMany(
+    User.findOneAndUpdate(
         {_id:empresa},
-        {cardapio:"rafael"}
+        {$push: { cardapio:"leo" } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
