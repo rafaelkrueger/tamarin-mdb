@@ -112,7 +112,20 @@ app.post("/get-user", async (req, res)=>{
 app.get("/empresa/:id", async (req, res)=>{
 
     const id = req.params.id
-    User.find({_id:req.params.id}).then((response)=>{
+    User.findOne({_id:req.params.id}).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+
+})
+
+app.post("/set-categoria", (req,res)=>{
+    const {empresa, category} = req.body
+    User.findOneAndUpdate(
+        {_id:empresa},
+        {categorias:"leo"}
+        ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
         console.log(err)
