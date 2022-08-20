@@ -124,7 +124,7 @@ app.post("/set-categoria", (req,res)=>{
     const {empresa, category} = req.body
     User.updateMany(
         {_id:empresa},
-        {$push: { cardapio:"leo" } }
+        {$push: { cardapio: {category} } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
