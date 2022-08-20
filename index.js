@@ -77,6 +77,16 @@ app.post("/set-user", (req,res)=>{
     })  
 })
 
+app.post("/delete-user", (req,res)=>{
+    const {id} = req.body
+    User.deleteOne({_id:id}).then((response)=>{
+        res.send(response)
+        console.log(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
+
 app.get("/all", (req, res)=>{
     User.find().then((response)=>{
         res.send(response)
