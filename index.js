@@ -138,7 +138,7 @@ app.post("/set-categoria", (req,res)=>{
 app.get("/set-produto", (req, res)=>{
     const {empresa, image, product, description, value, category } = req.body
 
-    res.send(id)
+    res.send("ola")
 })
 
 app.post("/delete-pedido", async (req, res)=>{
