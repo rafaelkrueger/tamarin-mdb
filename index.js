@@ -135,7 +135,7 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("set-produto/:id", (req, res)=>{
+app.get("set-produto/:id", (req, res)=>{
     const id = req.params.id
     const { image, product, description, value, category } = req.body
 
