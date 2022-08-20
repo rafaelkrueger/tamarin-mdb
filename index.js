@@ -140,9 +140,7 @@ app.post("set-produto/:id", (req, res)=>{
     const { image, product, description, value, category } = req.body
 
     User.updateOne({_id:id},
-        {
-            $addToSet: { cardapio:image}
-        }
+        {$addToSet: { cardapio:product } }
         )
         .then((response)=>{
         res.send(response)
