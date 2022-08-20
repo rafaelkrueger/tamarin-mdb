@@ -124,7 +124,7 @@ app.post("/set-categoria", (req,res)=>{
     const {empresa, category} = req.body
     User.updateOne(
         {_id:empresa},
-        {$addToSet: { cardapio:category } }
+        {$addToSet: { cardapio:{category:category} } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
