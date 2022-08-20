@@ -78,7 +78,7 @@ app.post("/set-user", (req,res)=>{
 })
 
 app.get("/all", (req, res)=>{
-    User.find().then(()=>{
+    User.find().then((response)=>{
         res.send(response)
     })
     .catch((err)=>{
