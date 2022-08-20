@@ -9,9 +9,8 @@ const userSchema = new Schema({
     number:String,
     site:String,
     users:Array,
-    cardapio:{
-        categoria:{}
-    },
+    categorias:Array,
+    cardapio:Array,
     pedidos:Array,
     orcamento:Array,
     message:Array
@@ -33,9 +32,8 @@ module.exports = User
     "email": "rafaelkrueger@gmail.com",
     "site": "https://www.google.com/search?q=tamarin-tech%40gmail.com&rlz=1C1GCEA_enBR982BR982&oq=tamarin-tech%40gmail.com&aqs=chrome..69i57j69i58.4448j1j4&sourceid=chrome&ie=UTF-8",
     "users": ["rafaelkrueger"],
-    "cardapio": {
-        
-    },
+
+    "cardapio":[],
     "pedidos": [{
         "id":1,
         "produto": "almondega",
