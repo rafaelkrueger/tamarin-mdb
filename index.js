@@ -120,6 +120,18 @@ app.get("/empresa/:id", async (req, res)=>{
 
 })
 
+app.post("/set-categoria", (req,res)=>{
+    const {empresa, category} = req.body
+    User.findOneAndUpdate(
+        {_id:empresa},
+        {$push: { categorias:"leo" } }
+        ).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+
+})
 
 app.post("/delete-pedido", async (req, res)=>{
 
