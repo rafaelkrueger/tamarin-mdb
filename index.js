@@ -86,11 +86,12 @@ app.get("/all", (req, res)=>{
     })
 })
 
-app.get("/get-user", async (req, res)=>{
+app.post("/get-user", async (req, res)=>{
     let {email, password} = req.body  
 
-    User.find({email:"rafaelkrueger454@gmail.com"}).then((response)=>{
+    User.find({email:email}).then((response)=>{
         res.send(response)
+        console.log(response)
     }).catch((err)=>{
         console.log(err)
     })
