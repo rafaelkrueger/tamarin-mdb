@@ -139,16 +139,7 @@ app.post("set-produto/:id", (req, res)=>{
     const id = req.params.id
     const { image, product, description, value, category } = req.body
 
-    User.updateOne({_id:id},
-        {$set: req.body }
-        )
-        .then((response)=>{
-        res.send(response)
-        }
-        ).catch((err)=>{
-        console.log(err)
-    })
-
+    res.send(id)
 })
 
 app.post("/delete-pedido", async (req, res)=>{
