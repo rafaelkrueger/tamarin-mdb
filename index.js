@@ -170,7 +170,7 @@ app.post("/delete-produto", (req, res)=>{
     const {empresa, nomeProduto} = req.body
     User.updateOne(
         {_id:empresa},
-        {$push: { cardapio:nomeProduto } }
+        {$pull: { cardapio:nomeProduto } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
