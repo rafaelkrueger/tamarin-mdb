@@ -166,7 +166,7 @@ app.post("/delete-categoria", (req,res)=>{
     })
 })
 
-app.post("delete-produto", (req, res)=>{
+app.post("/delete-produto", (req, res)=>{
     const {empresa, nomeProduto} = req.body
     User.updateOne(
         {_id:empresa},
