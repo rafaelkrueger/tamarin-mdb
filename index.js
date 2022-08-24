@@ -125,7 +125,7 @@ app.post("/set-categoria", (req,res)=>{
     const {empresa, category} = req.body
     User.updateOne(
         {_id:empresa},
-        {$addToSet: { cardapio:category } }
+        {$addToSet: { categorias:category } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
@@ -133,6 +133,20 @@ app.post("/set-categoria", (req,res)=>{
     })
 
 })
+
+app.post("/set-produto", (req,res)=>{
+    const {empresa, image, product, description, value, category} = req.body
+    User.updateOne(
+        {_id:empresa},
+        {$addToSet: { cardapio:product } }
+        ).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+
+})
+
 
 app.post("/delete-categoria", (req,res)=>{
     const {empresa, category} = req.body
@@ -146,18 +160,6 @@ app.post("/delete-categoria", (req,res)=>{
     })
 })
 
-app.post("/set-produto", (req,res)=>{
-    const {empresa, image, product, description, value, category} = req.body
-    User.updateOne(
-        {_id:empresa},
-        {$addToSet: { cardapio:category } }
-        ).then((response)=>{
-        res.send(response)
-    }).catch((err)=>{
-        console.log(err)
-    })
-
-})
 
 app.post("/delete-pedido", async (req, res)=>{
 
