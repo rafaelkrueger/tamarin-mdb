@@ -108,7 +108,6 @@ app.post("/get-user", async (req, res)=>{
         console.log(err)
     })
 
-
 })
 
 app.get("/empresa/:id", async (req, res)=>{
@@ -133,6 +132,18 @@ app.post("/set-categoria", (req,res)=>{
         console.log(err)
     })
 
+})
+
+app.post("/delete-categoria", (req,res)=>{
+    const {empresa, category} = req.body
+    User.deleteOne(
+        {_id:empresa},
+        {$addToSet: { categorias:category } }
+        ).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
 })
 
 app.post("/set-produto", (req,res)=>{
