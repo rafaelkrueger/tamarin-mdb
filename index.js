@@ -166,6 +166,18 @@ app.post("/delete-categoria", (req,res)=>{
     })
 })
 
+app.post("delete-produto", (req, res)=>{
+    const {empresa, nomeProduto} = req.body
+    User.deleteOne(
+        {_id:empresa},
+        {$push: { cardapio:nomeProduto } }
+        ).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
+
 
 app.post("/delete-pedido", async (req, res)=>{
 
