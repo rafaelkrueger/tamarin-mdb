@@ -143,7 +143,7 @@ app.post("/set-produto", (req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":"vazol"
+            "image":image
         }}}
             ).then((response)=>{
         res.send(response)
