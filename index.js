@@ -135,11 +135,17 @@ app.post("/set-categoria", (req,res)=>{
 })
 
 app.post("/set-produto", (req,res)=>{
-    const {empresa,product,description,category, value} = req.body
+    const {empresa,product,description,category, value, image} = req.body
     User.updateOne(
         {_id:empresa},
-        {$addToSet: { cardapio:{"product":product, "description":description, "category":category, "value":value} } }
-        ).then((response)=>{
+        {$addToSet: { cardapio:{
+            "product":product,
+            "description":description, 
+            "category":category, 
+            "value":value,
+            "image":"vazol"
+        }}}
+            ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
         console.log(err)
