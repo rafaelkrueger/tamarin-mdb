@@ -156,9 +156,9 @@ app.post("/set-produto", (req,res)=>{
 
 app.post("/delete-categoria", (req,res)=>{
     const {empresa, category} = req.body
-    User.deleteOne(
+    User.updateOne(
         {_id:empresa},
-        {$addToSet: { categorias:category } }
+        {$pull: { categorias:category } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
@@ -170,7 +170,7 @@ app.post("/delete-produto", (req, res)=>{
     const {empresa, nomeProduto} = req.body
     User.updateOne(
         {_id:empresa},
-        {$pull: { cardapio:nomeProduto } }
+        {$pull: { cardapio:{"product":nomeProduto} } }
         ).then((response)=>{
         res.send(response)
     }).catch((err)=>{
