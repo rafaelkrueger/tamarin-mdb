@@ -6,6 +6,8 @@ const app = express()
 const mongoose = require("mongoose");
 const Message = require("./models/message")
 const User = require("./models/Usuario")
+const multer = require("multer")
+const upload = multer({dest:'uploads/'})
 const PORT = process.env.PORT || 8080
 
 //Middlewares
@@ -17,6 +19,8 @@ app.use((req, res, next)=>{
     app.use(cors())
     next()
 })
+
+
 
 //Database Connection
 mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@tamarin.3bbedo7.mongodb.net/?retryWrites=true&w=majority",
@@ -134,8 +138,9 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto", (req,res)=>{
-    const {empresa,product,description,category, value, image} = req.body
+app.post("/set-produto", upload.single('image') ,(req,res)=>{
+    const {empresa,product,description,category, value} = req.body
+    const image = req.file
     User.updateOne(
         {_id:empresa},
         {$addToSet: { cardapio:{
@@ -152,7 +157,6 @@ app.post("/set-produto", (req,res)=>{
     })
 
 })
-
 
 app.post("/delete-categoria", (req,res)=>{
     const {empresa, category} = req.body
@@ -182,7 +186,7 @@ app.post("/delete-produto", (req, res)=>{
 app.post("/delete-pedido", async (req, res)=>{
 
     const {empresa, id} = req.body
-    User.deleteOne({_id:empresa}, {$pull:{pedidos:{id:id}}}).then((response)=>{
+    User.updateOne({_id:empresa}, {$pull:{pedidos:{id:id}}}).then((response)=>{
         res.send(response)
     }).catch((err)=>{
         console.log(err)
