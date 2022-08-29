@@ -10,16 +10,6 @@ const fs = require("fs")
 const multer = require("multer")
 const upload = multer({dest:'uploads/'})
 
-const storage = multer.diskStorage({
-    destination:(req,file,callback)=>{
-        callback(null, "./uploads/")
-    },
-    filename:(req,file,callback)=>{
-        callback(null, file.originalname)
-    }
-})
-
-upload = multer({storage:storage})
 
 const PORT = process.env.PORT || 8080
 
@@ -149,7 +139,7 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto", upload.single('image') ,(req,res)=>{
+app.post("/set-produto",(req,res)=>{
     const {empresa,product,description,category, value, image} = req.body
     User.updateOne(
         {_id:empresa},
