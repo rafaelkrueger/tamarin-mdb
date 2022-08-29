@@ -10,6 +10,17 @@ const fs = require("fs")
 const multer = require("multer")
 const upload = multer({dest:'uploads/'})
 
+const storage = multer.diskStorage({
+    destination:(req,file,callback)=>{
+        callback(null, "./uploads/")
+    },
+    filename:(req,file,callback)=>{
+        callback(null, file.originalname)
+    }
+})
+
+upload = multer({storage:storage})
+
 const PORT = process.env.PORT || 8080
 
 //Middlewares
