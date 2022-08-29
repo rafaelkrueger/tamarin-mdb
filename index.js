@@ -155,6 +155,7 @@ app.post("/set-produto",upload.single('image'),(req,res)=>{
         res.send(response)
     }).catch((err)=>{
         console.log(err)
+        res.send(req.file)
     })
 
 })
