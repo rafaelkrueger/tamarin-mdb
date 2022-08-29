@@ -148,7 +148,7 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto", upload.singli('image') ,(req,res)=>{
+app.post("/set-produto", upload.single('image') ,(req,res)=>{
     const {empresa,product,description,category, value, image} = req.body
     User.updateOne(
         {_id:empresa},
@@ -158,7 +158,7 @@ app.post("/set-produto", upload.singli('image') ,(req,res)=>{
             "category":category, 
             "value":value,
             "image":{
-                data:fs.readFileSync('uploads/', req.file.filename),
+                data:fs.readFileSync('uploads/' + req.file.filename),
                 contentType:"image/jpg"
             }
         }}}
