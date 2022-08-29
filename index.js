@@ -8,17 +8,7 @@ const Message = require("./models/message")
 const User = require("./models/Usuario")
 const fs = require("fs")
 const multer = require("multer")
-
-const Storage = multer.diskStorage({
-    destination:'uploads',
-    filename:(req,file,cb)=>{
-        cb(null, file.originalname)
-    }
-})
-
-const upload = multer({
-    storage:Storage
-})
+const upload = multer({dest:'uploads/'})
 
 const PORT = process.env.PORT || 8080
 
@@ -157,10 +147,7 @@ app.post("/set-produto", upload.single('image') ,(req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":{
-                data:fs.readFileSync('uploads/' + req.file.filename),
-                contentType:"image/jpg"
-            }
+            "image":image
         }}}
             ).then((response)=>{
         res.send(response)
