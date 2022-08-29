@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const Message = require("./models/message")
 const User = require("./models/Usuario")
 const multer = require("multer")
+const upload = multer({dest:'uploads/'})
 
 const PORT = process.env.PORT || 8080
 
