@@ -147,10 +147,7 @@ app.post("/set-produto", upload.single('image') ,(req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":{
-                data:fs.readFileSync("uploads/" + req.file.filename),
-                contentType:"image/jpg",
-            }
+            "image":image
         }}}
             ).then((response)=>{
         res.send(response)
