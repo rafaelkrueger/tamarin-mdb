@@ -148,7 +148,7 @@ app.post("/set-produto",upload.single('image'),(req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":image
+            "image":req.file.originalname
         }}}
             ).then((response)=>{
         res.send(response)
