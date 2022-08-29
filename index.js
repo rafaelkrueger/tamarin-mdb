@@ -141,7 +141,7 @@ app.post("/set-categoria", (req,res)=>{
 
 app.post("/set-produto",upload.single('image'),(req,res)=>{
     const {empresa,product,description,category, value} = req.body
-    const {image} = req.file.originalname
+    const {image} = req.file
     User.updateOne(
         {_id:empresa},
         {$addToSet: { cardapio:{
