@@ -6,11 +6,7 @@ const app = express()
 const mongoose = require("mongoose");
 const Message = require("./models/message")
 const User = require("./models/Usuario")
-const multer = require("multer")
 const PORT = process.env.PORT || 8080
-const upload = multer({
-    dest:'uploads/'
-})
 
 //Middlewares
 app.use(express.json())
@@ -21,8 +17,6 @@ app.use((req, res, next)=>{
     app.use(cors())
     next()
 })
-
-
 
 //Database Connection
 mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@tamarin.3bbedo7.mongodb.net/?retryWrites=true&w=majority",
@@ -140,9 +134,8 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto",upload.single('image') ,(req,res)=>{
-    const {empresa,product,description,category, value} = req.body
-    const { image } = req.image
+app.post("/set-produto", (req,res)=>{
+    const {empresa,product,description,category, value, image} = req.body
     User.updateOne(
         {_id:empresa},
         {$addToSet: { cardapio:{
