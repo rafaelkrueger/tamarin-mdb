@@ -7,7 +7,17 @@ const mongoose = require("mongoose");
 const Message = require("./models/message")
 const User = require("./models/Usuario")
 const multer = require("multer")
-const upload = multer({dest:'uploads/'})
+
+const Storage = multer.diskStorage({
+    destination:'uploads',
+    filename:(req,file,cb)=>{
+        cb(null, file.originalname)
+    }
+})
+
+const upload = multer({
+    storage:Storage
+}).single('image')
 
 const PORT = process.env.PORT || 8080
 
@@ -137,7 +147,7 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto", upload.single('image'), (req,res)=>{
+app.post("/set-produto", (req,res)=>{
     const {empresa,product,description,category, value, image} = req.body
     User.updateOne(
         {_id:empresa},
@@ -146,7 +156,10 @@ app.post("/set-produto", upload.single('image'), (req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":image
+            "image":{
+                data:req.file.filename,
+                contentType:'image/jpg'
+            }
         }}}
             ).then((response)=>{
         res.send(response)
