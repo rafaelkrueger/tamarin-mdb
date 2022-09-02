@@ -22,8 +22,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage})
 
 app.post("/set-produto",upload.single('testImage'),(req,res)=>{
-    const {empresa,product,description,category, value} = req.body
-    const { image } = req.file.filename 
+    const {empresa,product,description,category, value} = req.body 
     User.updateOne(
         {_id:empresa},
         {$addToSet: { cardapio:{
@@ -32,7 +31,7 @@ app.post("/set-produto",upload.single('testImage'),(req,res)=>{
             "category":category, 
             "value":value,
             "image":{
-                data:fs.readFileSync('uploads/' + image),
+                data:fs.readFileSync('uploads/' + req.file.filename),
                 contentType:"image/jpeg"
             }
         }}}
