@@ -7,11 +7,43 @@ const mongoose = require("mongoose");
 const Message = require("./models/message")
 const User = require("./models/Usuario")
 const fs = require("fs")
-const multer = require("multer")
-const upload = multer({dest:'uploads/'})
-
-
 const PORT = process.env.PORT || 8080
+const multer = require("multer")
+
+const storage = multer.diskStorage({
+    destination:(req, file, cb)=>{
+        cb(null,'uploads')
+    },
+    filename:(req,file,cb)=>{
+        cb(null,file.originalname)
+    }
+})
+
+const upload = multer({storage:storage})
+
+app.post("/set-produto",upload.single('testImage'),(req,res)=>{
+    const {empresa,product,description,category, value} = req.body
+    const { image } = req.file.filename 
+    User.updateOne(
+        {_id:empresa},
+        {$addToSet: { cardapio:{
+            "product":product,
+            "description":description, 
+            "category":category, 
+            "value":value,
+            "image":{
+                data:fs.readFileSync('uploads/' + image),
+                contentType:"image/jpeg"
+            }
+        }}}
+        ).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+        res.send(req.file)
+    })
+})
+
 
 //Middlewares
 app.use(express.json())
@@ -139,24 +171,7 @@ app.post("/set-categoria", (req,res)=>{
 
 })
 
-app.post("/set-produto",(req,res)=>{
-    const {empresa,product,description,category, value, image} = req.body
-    User.updateOne(
-        {_id:empresa},
-        {$addToSet: { cardapio:{
-            "product":product,
-            "description":description, 
-            "category":category, 
-            "value":value,
-        }}}
-        ).then((response)=>{
-        res.send(response)
-    }).catch((err)=>{
-        console.log(err)
-        res.send(req.file)
-    })
 
-})
 
 app.post("/delete-categoria", (req,res)=>{
     const {empresa, category} = req.body
