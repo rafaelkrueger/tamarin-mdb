@@ -21,23 +21,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage:storage})
 
-app.post("/set-produto",upload.single('testImage'),(req,res)=>{
-    const {empresa,product,description,category, value, image} = req.body 
-    User.updateOne(
-        {_id:empresa},
-        {$addToSet: { cardapio:{
-            "product":product,
-            "description":description, 
-            "category":category, 
-            "value":value,
-            "image":image
-        }}}
-        ).then((response)=>{
-        res.send(response)
-    }).catch((err)=>{
-        console.log(err)
-        res.send(req.file)
-    })
+//Database Connection
+mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@tamarin.3bbedo7.mongodb.net/?retryWrites=true&w=majority",
+{useNewUrlParser: true, 
+    useUnifiedTopology: true}).then(()=>{
+    console.log("Banco conectado!")
+}).catch((err)=>{
+    console.log(err.message)
 })
 
 
@@ -51,17 +41,33 @@ app.use((req, res, next)=>{
     next()
 })
 
-//Database Connection
-mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@tamarin.3bbedo7.mongodb.net/?retryWrites=true&w=majority",
-{useNewUrlParser: true, 
-    useUnifiedTopology: true}).then(()=>{
-    console.log("Banco conectado!")
-}).catch((err)=>{
-    console.log(err.message)
-})
-
 
 //Access Route
+
+
+        //em teste ainda
+        app.post("/set-produto",(req,res)=>{
+
+            const {empresa,product,description,category, value, image} = req.body 
+            User.updateOne(
+                {_id:empresa},
+                {$addToSet: { cardapio:{
+                    "product":product,
+                    "description":description, 
+                    "category":category, 
+                    "value":value,
+                    "image":"imagem.jpg"
+                }}}
+                ).then((response)=>{
+                res.send(response)
+            }).catch((err)=>{
+                console.log(err)
+                res.send(req.file)
+            })
+        })
+
+
+
 app.get("/", (req, res)=>{
     res.send("ola")
 })
