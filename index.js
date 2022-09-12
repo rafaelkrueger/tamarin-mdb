@@ -29,18 +29,15 @@ const upload = multer({
 
 app.post("/set-produto",(req,res)=>{
 
-    const {empresa,product,description,category, value, image} = req.body 
+    //const {empresa,product,description,category, value, image} = req.body 
     User.updateOne(
-        {_id:empresa},
+        {_id:"631f812cf209d0be9edf2f5b"},
         {$addToSet: { produto:{
-            "product":product,
-            "description":description, 
-            "category":category, 
-            "value":value,
-            "image":{
-                data:req.file.filename,
-                contentType:'image/png'
-            }
+            "product":"product",
+            "description":"description", 
+            "category":"Bebidas", 
+            "value":"value",
+            "image":"image"
         }}}
         ).then((response)=>{
         res.send(response)
