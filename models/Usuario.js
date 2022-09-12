@@ -10,7 +10,7 @@ const userSchema = new Schema({
     site:String,
     users:Array,
     categorias:Array,
-    cardapio:Array,
+    produto:Array,
     pedidos:Array,
     orcamento:Array,
     message:Array
