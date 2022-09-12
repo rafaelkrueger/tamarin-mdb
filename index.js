@@ -3,32 +3,53 @@ const axios = require("axios")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 const app = express()
-const mongoose = require("mongoose");
+const conn = require("./connection")
 const Message = require("./models/message")
 const User = require("./models/Usuario")
 const fs = require("fs")
 const PORT = process.env.PORT || 8080
-const multer = require("multer")
+const Grid = require("gridfs-stream")
+const mongoose = require("mongoose")
+//Database Connection
+conn()
 
+//multer
+const multer = require("multer")
 const storage = multer.diskStorage({
-    destination:(req, file, cb)=>{
-        cb(null,'uploads')
-    },
-    filename:(req,file,cb)=>{
-        cb(null,file.originalname)
+    destination:'uploads',
+    filename:(req,file,db)=>{
+        cb(null, file.originalname)
     }
 })
 
-const upload = multer({storage:storage})
+const upload = multer({
+    storage:storage
+}).single('testImage')
 
-//Database Connection
-mongoose.connect("mongodb+srv://rafaelkrueger:Vidanormal01@tamarin.3bbedo7.mongodb.net/?retryWrites=true&w=majority",
-{useNewUrlParser: true, 
-    useUnifiedTopology: true}).then(()=>{
-    console.log("Banco conectado!")
-}).catch((err)=>{
-    console.log(err.message)
+
+app.post("/set-produto",(req,res)=>{
+
+    const {empresa,product,description,category, value, image} = req.body 
+    User.updateOne(
+        {_id:empresa},
+        {$addToSet: { produto:{
+            "product":product,
+            "description":description, 
+            "category":category, 
+            "value":value,
+            "image":{
+                data:req.file.filename,
+                contentType:'image/png'
+            }
+        }}}
+        ).then((response)=>{
+        res.send(response)
+    }).catch((err)=>{
+        console.log(err)
+        res.send(req.file)
+    })
 })
+
 
 
 //Middlewares
@@ -44,8 +65,7 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-
-        //em teste ainda
+        /*em teste ainda
         app.post("/set-produto",(req,res)=>{
 
             const {empresa,product,description,category, value, image} = req.body 
@@ -64,7 +84,7 @@ app.use((req, res, next)=>{
                 console.log(err)
                 res.send(req.file)
             })
-        })
+        })*/
 
 
 
@@ -92,7 +112,7 @@ app.post("/set-user", (req,res)=>{
     const {logo, name, email, password, numero, site, user} = req.body
 
     let UserArray = []
-    let CardapioArray = []
+    let ProdutoArray = []
     let PedidosArray = []
     let OrcamentoArray = []
     let MessageArray = []
@@ -105,7 +125,7 @@ app.post("/set-user", (req,res)=>{
     number:numero,
     site:site,
     users:user,
-    cardapio:CardapioArray,
+    produto:ProdutoArray,
     pedidos:PedidosArray,
     orcamento:OrcamentoArray,
     message:MessageArray
