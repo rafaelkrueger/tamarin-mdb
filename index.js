@@ -27,6 +27,21 @@ const upload = multer({
 }).single('testImage')
 
 
+
+
+//Middlewares
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(cors())
+app.use((req, res, next)=>{
+    res.header("Access-Control-Allow-Origin", "*")
+    app.use(cors())
+    next()
+})
+
+
+//Access Route
+
 app.post("/set-produto",(req,res)=>{
 
     const {empresa,product,description,category, value, image} = req.body 
@@ -48,21 +63,10 @@ app.post("/set-produto",(req,res)=>{
 })
 
 
-
-//Middlewares
-app.use(express.json())
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(cors())
-app.use((req, res, next)=>{
-    res.header("Access-Control-Allow-Origin", "*")
-    app.use(cors())
-    next()
-})
-
-
-//Access Route
-
         /*em teste ainda
+
+        
+
         app.post("/set-produto",(req,res)=>{
 
             const {empresa,product,description,category, value, image} = req.body 

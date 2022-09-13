@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
+    _id:Schema.ObjectId,
     logo:String,
     name:String,
     password:String,
@@ -10,7 +11,13 @@ const userSchema = new Schema({
     site:String,
     users:Array,
     categorias:Array,
-    produto:Array,
+    produto:[{
+        product:String,
+        description:String, 
+        category:String, 
+        value:Number,
+        image:Buffer
+    }],
     pedidos:Array,
     orcamento:Array,
     message:Array
