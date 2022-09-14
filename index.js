@@ -6,12 +6,17 @@ const app = express()
 const conn = require("./connection")
 const Message = require("./models/message")
 const User = require("./models/Usuario")
+const cloudinary = require("cloudinary").v2
 const PORT = process.env.PORT || 8080
-const Grid = require("gridfs-stream")
-const multer = require("multer")
-const upload = multer({dest:'uploads/'})
+
 //Database Connection
 conn()
+
+cloudinary.config({ 
+    cloud_name: 'tamarin-tech', 
+    api_key: '739453756319644', 
+    api_secret: 'vitA4c7VnVj9_5RctBDuRUhocpI' 
+  });
 
 
 //Middlewares
@@ -27,9 +32,11 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-app.post("/set-produto", upload.single("image"),(req,res)=>{
-    const {empresa,product,description,category, value,} = req.body 
-
+app.post("/set-produto", (req,res)=>{
+    const {empresa,product,description,category, value, image} = req.body 
+    const result = cloudinary.uploader.upload(image,{
+        folder:products
+    })
     User.updateOne(
         {_id:empresa},
         {$addToSet: { produto:{
@@ -37,7 +44,10 @@ app.post("/set-produto", upload.single("image"),(req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":image
+            "image":{
+                public_id:result.public_id,
+                url:result.secure_url
+            }
         }}}
         ).then((response)=>{
         res.send(response)
