@@ -32,9 +32,8 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-app.post("/set-produto/:image", async (req,res)=>{
-    const {empresa,product,description,category, value} = req.body 
-    const image = req.params.image
+app.post("/set-produto", async (req,res)=>{
+    const {empresa,product,description,category, value, image} = req.body 
     const result = await cloudinary.uploader.upload(image,{
         folder:"samples"
     })
