@@ -6,27 +6,12 @@ const app = express()
 const conn = require("./connection")
 const Message = require("./models/message")
 const User = require("./models/Usuario")
-const fs = require("fs")
 const PORT = process.env.PORT || 8080
 const Grid = require("gridfs-stream")
-const mongoose = require("mongoose")
+const multer = require("multer")
+const upload = multer({dest:'uploads/'})
 //Database Connection
 conn()
-
-//multer
-const multer = require("multer")
-const storage = multer.diskStorage({
-    destination:'uploads',
-    filename:(req,file,db)=>{
-        cb(null, file.originalname)
-    }
-})
-
-const upload = multer({
-    storage:storage
-}).single('testImage')
-
-
 
 
 //Middlewares
@@ -42,9 +27,9 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-app.post("/set-produto",(req,res)=>{
+app.post("/set-produto", upload.single("image"),(req,res)=>{
+    const {empresa,product,description,category, value,} = req.body 
 
-    const {empresa,product,description,category, value, image} = req.body 
     User.updateOne(
         {_id:empresa},
         {$addToSet: { produto:{
