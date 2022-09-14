@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-    _id:Schema.ObjectId,
     logo:String,
     name:String,
     password:String,
@@ -18,7 +17,7 @@ const userSchema = new Schema({
         value:Number,
         image:{
             public_id:String,
-            url:String
+            url:String,
         }
     }],
     pedidos:Array,

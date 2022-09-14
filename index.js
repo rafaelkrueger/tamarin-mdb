@@ -32,9 +32,9 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-app.post("/set-produto", (req,res)=>{
+app.post("/set-produto", async (req,res)=>{
     const {empresa,product,description,category, value, image} = req.body 
-    const result = cloudinary.uploader.upload(image,{
+    const result = await cloudinary.uploader.upload(image,{
         folder:"samples"
     })
     User.updateOne(
@@ -49,39 +49,11 @@ app.post("/set-produto", (req,res)=>{
                 url:result.secure_url
             }
         }}}
-        ).then((response)=>{
-        res.send(response)
-    }).catch((err)=>{
+        ).catch((err)=>{
         console.log(err)
         res.send(req.file)
     })
 })
-
-
-        /*em teste ainda
-
-        
-
-        app.post("/set-produto",(req,res)=>{
-
-            const {empresa,product,description,category, value, image} = req.body 
-            User.updateOne(
-                {_id:empresa},
-                {$addToSet: { cardapio:{
-                    "product":product,
-                    "description":description, 
-                    "category":category, 
-                    "value":value,
-                    "image":"imagem.jpg"
-                }}}
-                ).then((response)=>{
-                res.send(response)
-            }).catch((err)=>{
-                console.log(err)
-                res.send(req.file)
-            })
-        })*/
-
 
 
 app.get("/", (req, res)=>{
