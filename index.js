@@ -35,7 +35,7 @@ app.use((req, res, next)=>{
 app.post("/set-produto", (req,res)=>{
     const {empresa,product,description,category, value, image} = req.body 
     const result = cloudinary.uploader.upload(image,{
-        folder:products
+        folder:"samples"
     })
     User.updateOne(
         {_id:empresa},
