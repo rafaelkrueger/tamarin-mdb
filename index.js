@@ -44,8 +44,8 @@ app.post("/set-produto", async (req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":result.secure_url
-            
+            "image":result.secure_url,
+            "public_id":result.public_id,
         }}}
         ).catch((err)=>{
         console.log(err)
