@@ -47,12 +47,12 @@ app.post("/set-produto", (req,res)=>{
             "image":result.secure_url,
             "public_id":result.public_id,
         }}}
-        ).then((res)=>{
-            console.log(res)
+        ).then((response)=>{
+            res.send(response)
+            console.log(response)
         }).catch((err)=>{
-        console.log(err)
-        res.send(req.file)
-    })
+            console.log(err)
+        })
 })
 
 
