@@ -2,14 +2,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-    logo:{
-        type:String,
-        required:true
-    },
-    logo_id:{
-        type:String,
-        required:true
-    },
+    logo:String,
+    logo_id:String,
     name:String,
     password:String,
     email:String,
