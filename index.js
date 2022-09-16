@@ -44,7 +44,7 @@ app.post("/set-produto", (req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":image,
+            "image":result.secure_url,
             "public_id":result.public_id,
         }}}
         ).then((res)=>{
