@@ -32,9 +32,10 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-app.post("/set-produto", (req,res)=>{
+app.post("/set-produto", async (req,res)=>{
     const {empresa,product,description,category, value, image} = req.body 
-    const result = cloudinary.uploader.upload(image,{
+        
+    const result = await cloudinary.uploader.upload(image,{
         folder:"samples"
     })
     User.updateOne(
@@ -46,13 +47,11 @@ app.post("/set-produto", (req,res)=>{
             "value":value,
             "image":result.secure_url,
             "public_id":result.public_id,
-        }}}
-        ).then((response)=>{
-            res.send(response)
-            console.log(response)
-        }).catch((err)=>{
-            console.log(err)
-        })
+    }}}).then((response)=>{
+        console.log(response)
+    }).catch((err)=>{
+        console.log(err)
+    })
 })
 
 
@@ -79,6 +78,10 @@ app.post("/set-user", (req,res)=>{
 
     const {logo, name, email, password, numero, site, user} = req.body
 
+    const result = cloudinary.uploader.upload(logo,{
+        folder:"samples"
+    })
+
     let UserArray = []
     let ProdutoArray = []
     let PedidosArray = []
@@ -86,7 +89,8 @@ app.post("/set-user", (req,res)=>{
     let MessageArray = []
 
     const newUser = new User({
-    logo:logo,
+    logo:result.url,
+    logo_id:result._id,
     name:name,
     email:email,
     password:password,
