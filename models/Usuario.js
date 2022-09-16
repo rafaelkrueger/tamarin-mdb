@@ -16,6 +16,7 @@ const userSchema = new Schema({
         category:String, 
         value:Number,
         image:String,
+        public_id:String,
     }],
     pedidos:Array,
     orcamento:Array,
