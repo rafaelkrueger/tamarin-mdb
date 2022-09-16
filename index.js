@@ -20,8 +20,8 @@ cloudinary.config({
 
 
 //Middlewares
-app.use(express.json())
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json({limit: '1000mb'}));
+app.use(bodyParser.urlencoded({limit: '1000mb', extended: true}));
 app.use(cors())
 app.use((req, res, next)=>{
     res.header("Access-Control-Allow-Origin", "*")
@@ -34,9 +34,6 @@ app.use((req, res, next)=>{
 
 app.post("/set-produto", (req,res)=>{
     const {empresa,product,description,category, value, image} = req.body 
-    const result = cloudinary.uploader.upload(image,{
-        folder:"samples"
-    })
     User.updateOne(
         {_id:empresa},
         {$addToSet: { produto:{
@@ -44,8 +41,7 @@ app.post("/set-produto", (req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":result.secure_url,
-            "public_id":result.public_id,
+            "image":image,
         }}}
         ).then((res)=>{
             console.log(res)
