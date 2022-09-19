@@ -7,6 +7,8 @@ const conn = require("./connection")
 const Message = require("./models/message")
 const User = require("./models/Usuario")
 const cloudinary = require("cloudinary").v2
+const fileupload = require('express-fileupload'); 
+
 const PORT = process.env.PORT || 8080
 
 //Database Connection
@@ -22,6 +24,7 @@ cloudinary.config({
 //Middlewares
 app.use(bodyParser.json({limit: '1000mb'}));
 app.use(bodyParser.urlencoded({limit: '1000mb', extended: true}));
+app.use(fileupload({useTempFiles: true}))
 app.use(cors())
 app.use((req, res, next)=>{
     res.header("Access-Control-Allow-Origin", "*")
@@ -38,6 +41,7 @@ app.post("/set-produto", (req,res)=>{
     const result = cloudinary.uploader.upload(image,{
         folder:"samples"
     })
+
     User.updateOne(
         {_id:empresa},
         {$addToSet: { produto:{
@@ -45,8 +49,8 @@ app.post("/set-produto", (req,res)=>{
             "description":description, 
             "category":category, 
             "value":value,
-            "image":result.secure_url,
-            "public_id":result.public_id,
+//          "image":result.secure_url,
+//          "public_id":result.public_id,
     }}}).then((response)=>{
         console.log(response)
     }).catch((err)=>{
@@ -74,38 +78,42 @@ app.post("/set-message", (req,res)=>{
 })
 
 
-app.post("/set-user", (req,res)=>{
-
+app.post("/set-user", async (req,res)=>{
     const {logo, name, email, password, numero, site, user} = req.body
-
-    const result = cloudinary.uploader.upload(logo,{
-        folder:"samples"
-    })
-
-    let UserArray = []
-    let ProdutoArray = []
-    let PedidosArray = []
-    let OrcamentoArray = []
-    let MessageArray = []
-
-    const newUser = new User({
-    logo:result.url,
-    logo_id:result._id,
-    name:name,
-    email:email,
-    password:password,
-    number:numero,
-    site:site,
-    users:user,
-    produto:ProdutoArray,
-    pedidos:PedidosArray,
-    orcamento:OrcamentoArray,
-    message:MessageArray
-    })
-    newUser.save((err, message)=>{
-        if(err) console.log(err)
-        console.log(message)
-    })  
+    try{
+        console.log(logo)
+        const result = await cloudinary.uploader.upload(logo,{
+            folder:"samples",
+            resource_type: "auto"
+        })
+    
+        let UserArray = []
+        let ProdutoArray = []
+        let PedidosArray = []
+        let OrcamentoArray = []
+        let MessageArray = []
+    
+        const newUser = new User({
+        logo:result.url,
+        logo_id:result._id,
+        name:name,
+        email:email,
+        password:password,
+        number:numero,
+        site:site,
+        users:user,
+        produto:ProdutoArray,
+        pedidos:PedidosArray,
+        orcamento:OrcamentoArray,
+        message:MessageArray
+        })
+        newUser.save((err, message)=>{
+            if(err) console.log(err)
+            console.log(message)
+        })  
+    }catch(error){
+        console.log(error)
+    }
 })
 
 
