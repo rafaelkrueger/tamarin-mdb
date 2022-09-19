@@ -41,8 +41,8 @@ app.post("/set-produto", async (req,res)=>{
         const result = await cloudinary.uploader.upload(image,{
             folder:"samples",
             resource_type: "auto"
-
         })
+        console.log(result)
         User.updateOne(
             {_id:empresa},
             {$addToSet: { produto:{
@@ -53,7 +53,7 @@ app.post("/set-produto", async (req,res)=>{
                 "image":result.secure_url,
                 "public_id":result.public_id,
         }}
-    })        
+    }).then((res)=>console.log(res)).catch((err)=>console.log(err))        
     }catch(err){
         console.log(err)
     }
