@@ -83,7 +83,7 @@ app.post("/set-user", async (req,res)=>{
     try{
         console.log(logo)
         const result = await cloudinary.uploader.upload(logo,{
-            folder:"samples",
+            folder:"tamarin-companies",
             resource_type: "auto"
         })
     
