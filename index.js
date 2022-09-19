@@ -35,27 +35,28 @@ app.use((req, res, next)=>{
 
 //Access Route
 
-app.post("/set-produto", (req,res)=>{
-    const {empresa,product,description,category, value, image} = req.body 
-        
-    const result = cloudinary.uploader.upload(image,{
-        folder:"samples"
-    })
+app.post("/set-produto", async (req,res)=>{
+    try{
+        const {empresa,product,description,category, value, image} = req.body         
+        console.log(image)
+        const result = await cloudinary.uploader.upload(image,{
+            folder:"samples"
+        })
 
-    User.updateOne(
-        {_id:empresa},
-        {$addToSet: { produto:{
-            "product":product,
-            "description":description, 
-            "category":category, 
-            "value":value,
-//          "image":result.secure_url,
-//          "public_id":result.public_id,
-    }}}).then((response)=>{
-        console.log(response)
-    }).catch((err)=>{
+        User.updateOne(
+            {_id:empresa},
+            {$addToSet: { produto:{
+                "product":product,
+                "description":description, 
+                "category":category, 
+                "value":value,
+                "image":result.secure_url,
+                "public_id":result.public_id,
+        }}
+    })        
+    }catch(err){
         console.log(err)
-    })
+    }
 })
 
 
