@@ -141,7 +141,7 @@ app.post("/delete-user", (req,res)=>{
 app.post("/get-user", async (req, res)=>{
     let {email, password} = req.body  
 
-    User.find({email:email}).then((response)=>{
+    User.find({email:email, password:password}).then((response)=>{
         res.send(response)
         console.log(response)
     }).catch((err)=>{
