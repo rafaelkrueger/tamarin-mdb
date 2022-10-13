@@ -177,7 +177,7 @@ app.post("/set-produto", async (req, res) => {
   }
 });
 
-app.post("/update-produto", async (req, res) => {
+app.patch("/update-produto", async (req, res) => {
   const { empresa, product, description, category, value, image } = req.body;
   try {
     const { empresa, product, description, category, value, image } = req.body;
@@ -188,7 +188,7 @@ app.post("/update-produto", async (req, res) => {
     User.updateOne(
       { _id: empresa },
       {
-        $addToSet: {
+        $set: {
           produto: {
             product: product,
             description: description,
