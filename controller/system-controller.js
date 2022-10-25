@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const axios = require("axios");
+const Message = require("./models/message");
+const cloudinary = require("cloudinary").v2;
+const fileupload = require("express-fileupload");
 
 
 const home = (req, res)=>{

@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const User = require("./models/Usuario");
+
 
 const setUser = (async (req, res) =>{
     const { logo, name, email, password, numero, site, user } = req.body;
