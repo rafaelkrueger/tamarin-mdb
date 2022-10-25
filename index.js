@@ -3,9 +3,14 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const conn = require("./connection");
+//models
 const Message = require("./models/message");
 const User = require("./models/Usuario");
+//controllers
+const {setUser, getUser, deleteUser, getEmpresa} = require("./controller/user-controller")
+const { setMessage,home,news } = require("./controller/system-controller")
+//connection
+const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
 
@@ -33,97 +38,17 @@ app.use((req, res, next) => {
 
 //Access Route
 
-app.get("/", (req, res) => {
-  res.send("ola");
-});
 
-app.post("/set-message", (req, res) => {
-  let { name, email, number, message } = req.body;
-  const newMessage = new Message({
-    name: name,
-    email: email,
-    number: number,
-    message: message,
-  });
-  newMessage.save((err, message) => {
-    if (err) console.log(err);
-    console.log(message);
-  });
-});
+//system routes
+app.get("/", home);
+app.post("/set-message", setMessage);
+app.get("/news", news);
 
-app.post("/set-user", async (req, res) => {
-  const { logo, name, email, password, numero, site, user } = req.body;
-  try {
-    console.log(logo);
-    const result = await cloudinary.uploader.upload(logo, {
-      folder: "tamarin-companies",
-      resource_type: "auto",
-    });
-
-    let UserArray = [];
-    let ProdutoArray = [];
-    let PedidosArray = [];
-    let OrcamentoArray = [];
-    let MessageArray = [];
-
-    const newUser = new User({
-      logo: result.url,
-      logo_id: result._id,
-      name: name,
-      email: email,
-      password: password,
-      number: numero,
-      site: site,
-      users: user,
-      produto: ProdutoArray,
-      pedidos: PedidosArray,
-      orcamento: OrcamentoArray,
-      message: MessageArray,
-    });
-    newUser.save((err, message) => {
-      if (err) console.log(err);
-      console.log(message);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-app.post("/get-user", async (req, res) => {
-  let { email, password } = req.body;
-
-  User.find({ email: email, password: password })
-    .then((response) => {
-      res.send(response);
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.post("/delete-user", (req, res) => {
-  const { id } = req.body;
-  User.deleteOne({ _id: id })
-    .then((response) => {
-      res.send(response);
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/empresa/:id", async (req, res) => {
-  const id = req.params.id;
-  User.findOne({ _id: req.params.id })
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+//user access routes
+app.post("/set-user", setUser);
+app.post("/get-user", getUser);
+app.post("/delete-user", deleteUser);
+app.get("/empresa/:id", getEmpresa);
 
 app.post("/set-categoria", (req, res) => {
   const { empresa, category } = req.body;
@@ -233,21 +158,6 @@ app.post("/delete-pedido", async (req, res) => {
     });
 });
 
-//Apis externas para alterações externas
-app.get("/news", (req, res) => {
-  const newsPesquisa = "programming";
-  const news = `https://newsapi.org/v2/everything?q=${newsPesquisa}&apiKey=fdbb0b23c7fe482b9a98a00908ab4f98`;
-
-  axios
-    .get(news)
-    .then((response) => {
-      res.send(JSON.stringify(response.data));
-      console.log("api-acessada");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
