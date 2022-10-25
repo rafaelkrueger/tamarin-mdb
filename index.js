@@ -7,8 +7,20 @@ const app = express();
 const Message = require("./models/message");
 const User = require("./models/Usuario");
 //controllers
-const {setUser, getUser, deleteUser, getEmpresa} = require("./controller/user-controller")
-const { setMessage,home,news } = require("./controller/system-controller")
+const {
+  setUser,
+  getUser,
+  deleteUser,
+  getEmpresa,
+} = require("./controller/user-controller");
+const { setMessage, home, news } = require("./controller/system-controller");
+const {
+  setCategoria,
+  deleteCategoria,
+  setProduto,
+  updateProduto,
+  deleteProduto,
+} = require("./controller/products-controller");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -38,7 +50,6 @@ app.use((req, res, next) => {
 
 //Access Route
 
-
 //system routes
 app.get("/", home);
 app.post("/set-message", setMessage);
@@ -50,103 +61,14 @@ app.post("/get-user", getUser);
 app.post("/delete-user", deleteUser);
 app.get("/empresa/:id", getEmpresa);
 
-app.post("/set-categoria", (req, res) => {
-  const { empresa, category } = req.body;
-  User.updateOne({ _id: empresa }, { $addToSet: { categorias: category } })
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+//products handler
+app.post("/set-categoria", setCategoria);
+app.post("/delete-categoria", deleteCategoria);
+app.post("/set-produto", setProduto);
+app.patch("/update-produto", updateProduto);
+app.post("/delete-produto", deleteProduto);
 
-app.post("/delete-categoria", (req, res) => {
-  const { empresa, category } = req.body;
-  User.updateOne({ _id: empresa }, { $pull: { categorias: category } })
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.post("/set-produto", async (req, res) => {
-  try {
-    const { empresa, product, description, category, value, image } = req.body;
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "samples",
-      resource_type: "auto",
-    });
-    console.log(result);
-    User.updateOne(
-      { _id: empresa },
-      {
-        $addToSet: {
-          produto: {
-            product: product,
-            description: description,
-            category: category,
-            value: value,
-            image: result.secure_url,
-            public_id: result.public_id,
-          },
-        },
-      }
-    )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.patch("/update-produto", async (req, res) => {
-  const { empresa, product, description, category, value, image } = req.body;
-  try {
-    const { empresa, product, description, category, value, image } = req.body;
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "samples",
-      resource_type: "auto",
-    });
-    User.updateOne(
-      { _id: empresa },
-      {
-        $set: {
-          produto: {
-            product: product,
-            description: description,
-            category: category,
-            value: value,
-            image: result.secure_url,
-            public_id: result.public_id,
-          },
-        },
-      }
-    )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/delete-produto", (req, res) => {
-  const { empresa, nomeProduto } = req.body;
-
-  User.updateOne(
-    { _id: empresa },
-    { $pull: { produto: { product: nomeProduto } } }
-  )
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
+//order handler
 app.post("/delete-pedido", async (req, res) => {
   const { empresa, id } = req.body;
   User.updateOne({ _id: empresa }, { $pull: { pedidos: { id: id } } })
@@ -157,7 +79,6 @@ app.post("/delete-pedido", async (req, res) => {
       console.log(err);
     });
 });
-
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
