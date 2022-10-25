@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const User = require("./models/Usuario");
+const cloudinary = require("cloudinary").v2;
+const fileupload = require("express-fileupload");
+
 
 
 const setUser = (async (req, res) =>{
