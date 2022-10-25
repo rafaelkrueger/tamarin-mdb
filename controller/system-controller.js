@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const axios = require("axios");
-const Message = require("./models/message");
+const Message = require("../models/message");
 
 
 const home = (req, res)=>{
