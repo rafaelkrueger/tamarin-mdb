@@ -13,7 +13,12 @@ const {
   deleteUser,
   getEmpresa,
 } = require("./controller/user-controller");
-const { setMessage, home, news } = require("./controller/system-controller");
+const {
+  setMessage,
+  home,
+  news,
+  cardPayment,
+} = require("./controller/system-controller");
 const {
   setCategoria,
   deleteCategoria,
@@ -21,11 +26,12 @@ const {
   updateProduto,
   deleteProduto,
 } = require("./controller/products-controller");
+const { pix } = require("./controller/payment-controller");
+
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
-
 const PORT = process.env.PORT || 8080;
 
 //Database Connection
@@ -48,7 +54,9 @@ app.use((req, res, next) => {
   next();
 });
 
-//Access Route
+//configuration
+app.set("view engine", "ejs");
+app.set("views", "./views");
 
 //system routes
 app.get("/", home);
@@ -79,6 +87,10 @@ app.post("/delete-pedido", async (req, res) => {
       console.log(err);
     });
 });
+
+//payment handler
+
+app.post("/card-payment", cors(), cardPayment);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
