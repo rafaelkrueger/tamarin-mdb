@@ -40,8 +40,12 @@ const setMessage = (req, res) => {
 };
 
 const cardPayment = async (req, res) => {
-  let { name, amount, id } = req.body;
+  let { name, email, amount, id } = req.body;
   try {
+    const cus = await stripe.costumer.create({
+      email: email,
+      name: name,
+    });
     const payment = await stripe.paymentIntents.create({
       amount,
       currency: "BRL",
@@ -62,11 +66,11 @@ const cardPayment = async (req, res) => {
       success: false,
     });
   }
-});
+};
 
 module.exports = {
   home,
   news,
   setMessage,
-  cardPayment
+  cardPayment,
 };
