@@ -58,23 +58,16 @@ const setProduto = async (req, res) => {
 
 const updateProduto = async (req, res) => {
   try {
-    const { empresa, product, description, category, value, image } = req.body;
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "samples",
-      resource_type: "auto",
-    });
+    const { empresa, productId, product, description, category, value, image } =
+      req.body;
     User.updateOne(
-      { _id: empresa },
+      { _id: empresa, "produto._id": productId },
       {
-        $AddToSet: {
-          produto: {
-            product: product,
-            description: description,
-            category: category,
-            value: value,
-            image: result.secure_url,
-            public_id: result.public_id,
-          },
+        $set: {
+          "produto.$.product": product,
+          "produto.$.description": description,
+          "produto.$.category": category,
+          "produto.$.value": value,
         },
       }
     )

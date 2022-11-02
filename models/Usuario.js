@@ -1,33 +1,34 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    logo:String,
-    logo_id:String,
-    name:String,
-    password:String,
-    email:String,
-    number:String,
-    site:String,
-    users:Array,
-    categorias:Array,
-    produto:[{
-        product:String,
-        description:String, 
-        category:String, 
-        value:Number,
-        image:String,
-        public_id:String,
-    }],
-    pedidos:Array,
-    orcamento:Array,
-    message:Array
-})
+  logo: String,
+  logo_id: String,
+  name: String,
+  password: String,
+  email: String,
+  number: String,
+  site: String,
+  users: Array,
+  categorias: Array,
+  produto: [
+    {
+      product: String,
+      description: String,
+      category: String,
+      value: Number,
+      image: String,
+      public_id: String,
+    },
+  ],
+  pedidos: Array,
+  orcamento: Array,
+  message: Array,
+});
 
-const User = mongoose.model('user', userSchema)
+const User = mongoose.model("user", userSchema);
 
-module.exports = User
-
+module.exports = User;
 
 /*
 {{
