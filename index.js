@@ -52,7 +52,7 @@ app.post("/set-message", setMessage);
 app.get("/news", news);
 
 //user access routes
-//app.post("/set-user", setUser);
+app.post("/set-user", setUser);
 app.post("/get-user", getUser);
 app.post("/delete-user", deleteUser);
 app.get("/empresa/:id", getEmpresa);
@@ -79,35 +79,35 @@ app.post("/delete-categoria", (req, res) => {
     });
 });
 
-// app.post("/set-produto", async (req, res) => {
-//   try {
-//     const { empresa, product, description, category, value, image } = req.body;
-//     const result = await cloudinary.uploader.upload(image, {
-//       folder: "samples",
-//       resource_type: "auto",
-//     });
-//     console.log(result);
-//     User.updateOne(
-//       { _id: empresa },
-//       {
-//         $addToSet: {
-//           produto: {
-//             product: product,
-//             description: description,
-//             category: category,
-//             value: value,
-//             image: result.secure_url,
-//             public_id: result.public_id,
-//           },
-//         },
-//       }
-//     )
-//       .then((res) => console.log(res))
-//       .catch((err) => console.log(err));
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+app.post("/set-produto", async (req, res) => {
+  try {
+    const { empresa, product, description, category, value } = req.body;
+    const image = req.files.image;
+    const result = await cloudinary.uploader.upload(image.tempFilePath, {
+      folder: "samples",
+      resource_type: "auto",
+    });
+    User.updateOne(
+      { _id: empresa },
+      {
+        $addToSet: {
+          produto: {
+            product: product,
+            description: description,
+            category: category,
+            value: value,
+            image: result.secure_url,
+            public_id: result.public_id,
+          },
+        },
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 // app.patch("/update-produto", async (req, res) => {
 //   const { empresa, product, description, category, value, image } = req.body;
