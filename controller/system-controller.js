@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const Message = require("../models/message");
-const stripe = require("stripe")(
-  "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"
-);
 
 const home = (req, res) => {
   res.send("funcionando");
