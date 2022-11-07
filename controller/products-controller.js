@@ -60,10 +60,6 @@ const updateProduto = async (req, res) => {
   try {
     const { productId, product, description, category, value, image } =
       req.body;
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "samples",
-      resource_type: "auto",
-    });
     User.updateOne(
       { "produto._id": productId },
       {
