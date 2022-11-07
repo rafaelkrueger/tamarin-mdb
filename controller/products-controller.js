@@ -58,7 +58,7 @@ const setProduto = async (req, res) => {
 
 const updateProduto = async (req, res) => {
   try {
-    const { product_id, product, description, category, value, image } =
+    const { productId, product, description, category, value, image } =
       req.body;
     const result = await cloudinary.uploader.upload(image, {
       folder: "samples",
