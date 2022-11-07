@@ -7,6 +7,7 @@ const app = express();
 const Message = require("./models/message");
 const User = require("./models/Usuario");
 //controllers
+
 const {
   setUser,
   getUser,
@@ -14,11 +15,13 @@ const {
   getEmpresa,
 } = require("./controller/user-controller");
 const { setMessage, home, news } = require("./controller/system-controller");
+
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8080;
+
 //Database Connection
 conn();
 
@@ -78,12 +81,12 @@ app.post("/delete-categoria", (req, res) => {
 
 app.post("/set-produto", async (req, res) => {
   try {
-    const { empresa, product, description, category, value } = req.body;
-    const image = req.files.image;
-    const result = await cloudinary.uploader.upload(image.tempFilePath, {
+    const { empresa, product, description, category, value, image } = req.body;
+    const result = await cloudinary.uploader.upload(image, {
       folder: "samples",
       resource_type: "auto",
     });
+    console.log(result);
     User.updateOne(
       { _id: empresa },
       {
@@ -106,35 +109,35 @@ app.post("/set-produto", async (req, res) => {
   }
 });
 
-// app.patch("/update-produto", async (req, res) => {
-//   const { empresa, product, description, category, value, image } = req.body;
-//   try {
-//     const { empresa, product, description, category, value, image } = req.body;
-//     const result = await cloudinary.uploader.upload(image, {
-//       folder: "samples",
-//       resource_type: "auto",
-//     });
-//     User.updateOne(
-//       { _id: empresa },
-//       {
-//         $set: {
-//           produto: {
-//             product: product,
-//             description: description,
-//             category: category,
-//             value: value,
-//             image: result.secure_url,
-//             public_id: result.public_id,
-//           },
-//         },
-//       }
-//     )
-//       .then((res) => console.log(res))
-//       .catch((err) => console.log(err));
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+app.patch("/update-produto", async (req, res) => {
+  const { empresa, product, description, category, value, image } = req.body;
+  try {
+    const { empresa, product, description, category, value, image } = req.body;
+    const result = await cloudinary.uploader.upload(image, {
+      folder: "samples",
+      resource_type: "auto",
+    });
+    User.updateOne(
+      { _id: empresa },
+      {
+        $set: {
+          produto: {
+            product: product,
+            description: description,
+            category: category,
+            value: value,
+            image: result.secure_url,
+            public_id: result.public_id,
+          },
+        },
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.post("/delete-produto", (req, res) => {
   const { empresa, nomeProduto } = req.body;
