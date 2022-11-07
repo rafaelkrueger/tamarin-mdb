@@ -3,7 +3,8 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-
+const { setMessage, home, news } = require("./controller/system-controller");
+//connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
