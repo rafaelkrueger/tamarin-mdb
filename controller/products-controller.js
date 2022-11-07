@@ -65,7 +65,7 @@ const updateProduto = async (req, res) => {
       resource_type: "auto",
     });
     User.updateOne(
-      { "produto._id": product_id },
+      { "produto._id": productId },
       {
         $set: {
           "produto.$.product": product,
