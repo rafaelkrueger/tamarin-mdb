@@ -14,12 +14,7 @@ const {
   deleteUser,
   getEmpresa,
 } = require("./controller/user-controller");
-const {
-  setMessage,
-  home,
-  news,
-  cardPayment,
-} = require("./controller/system-controller");
+const { setMessage, home, news } = require("./controller/system-controller");
 
 //connection
 const conn = require("./connection");

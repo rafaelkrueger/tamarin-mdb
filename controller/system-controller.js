@@ -39,38 +39,8 @@ const setMessage = (req, res) => {
   });
 };
 
-const cardPayment = async (req, res) => {
-  let { name, email, amount, id } = req.body;
-  try {
-    const cus = await stripe.costumer.create({
-      email: email,
-      name: name,
-    });
-    const payment = await stripe.paymentIntents.create({
-      amount,
-      currency: "BRL",
-      description: name,
-      payment_method: id,
-      metadata: { name },
-      confirm: true,
-    });
-    console.log("Payment", payment);
-    res.json({
-      message: "Paymeny Success",
-      success: true,
-    });
-  } catch (error) {
-    console.log("error", error);
-    res.json({
-      message: "payment Failed",
-      success: false,
-    });
-  }
-};
-
 module.exports = {
   home,
   news,
   setMessage,
-  cardPayment,
 };
