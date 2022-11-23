@@ -17,6 +17,7 @@ const userSchema = new Schema({
       description: String,
       category: String,
       value: Number,
+      options: Array,
       image: String,
       public_id: String,
     },
