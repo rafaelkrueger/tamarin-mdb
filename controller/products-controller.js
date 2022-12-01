@@ -28,12 +28,20 @@ const deleteCategoria = (req, res) => {
 
 const setProduto = async (req, res) => {
   try {
-    const { empresa, product, description, category, value, image } = req.body;
+    const {
+      empresa,
+      product,
+      description,
+      category,
+      value,
+      image,
+      options,
+      avaible,
+    } = req.body;
     const result = await cloudinary.uploader.upload(image, {
       folder: "samples",
       resource_type: "auto",
     });
-    console.log(result);
     User.updateOne(
       { _id: empresa },
       {
@@ -43,8 +51,12 @@ const setProduto = async (req, res) => {
             description: description,
             category: category,
             value: value,
+            options: options,
             image: result.secure_url,
             public_id: result.public_id,
+            sold: 0,
+            avaible: avaible,
+            rating: 0,
           },
         },
       }
