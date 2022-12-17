@@ -39,8 +39,8 @@ cloudinary.config({
 });
 
 //Middlewares
-app.use(bodyParser.json({ limit: "1000mb" }));
-app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
+app.use(bodyParser.json({ limit: "100000mb" }));
+app.use(bodyParser.urlencoded({ limit: "100000mb", extended: true }));
 app.use(fileupload({ useTempFiles: true }));
 app.use(cors());
 app.use((req, res, next) => {
@@ -73,7 +73,7 @@ app.patch("/update-produto", updateProduto);
 app.post("/delete-produto", deleteProduto);
 
 //website handler routes
-app.put("/website-style", setWebsiteStyle);
+app.patch("/website-style", setWebsiteStyle);
 
 app.post("/delete-pedido", async (req, res) => {
   const { empresa, id } = req.body;

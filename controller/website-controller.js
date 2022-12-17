@@ -1,20 +1,42 @@
 const express = require("express");
-const router = express.Router();
-const axios = require("axios");
 const User = require("../models/Usuario");
+const cloudinary = require("cloudinary").v2;
 
-const setWebsiteStyle = (req, res) => {
+const setWebsiteStyle = async (req, res) => {
   try {
-    const { productId, product, description, category, value, image } =
-      req.body;
+    const {
+      empresa,
+      websiteNavbarFooterColor,
+      websiteFontFooterColor,
+      websiteColor,
+      websiteFontColor,
+      websiteCarousel,
+    } = req.body;
+    const result = async () => {
+      if (websiteCarousel.charAt(0) == "h") {
+        return websiteCarousel;
+      } else {
+        const result = await cloudinary.uploader.upload(websiteCarousel, {
+          folder: "samples",
+          resource_type: "auto",
+        });
+        return result;
+      }
+    };
+    const resultImage = await result();
+
     User.updateOne(
-      { "produto._id": productId },
+      { _id: empresa },
       {
         $set: {
-          "produto.$.product": product,
-          "produto.$.description": description,
-          "produto.$.category": category,
-          "produto.$.value": value,
+          "website.websiteNavbarFooterColor": websiteNavbarFooterColor,
+          "website.websiteFontFooterColor": websiteFontFooterColor,
+          "website.websiteColor": websiteColor,
+          "website.websiteFontColor": websiteFontColor,
+          "website.websiteCarousel":
+            websiteCarousel.charAt(0) == "h"
+              ? resultImage
+              : resultImage.secure_url,
         },
       }
     )
