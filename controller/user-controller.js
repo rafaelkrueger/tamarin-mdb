@@ -8,7 +8,6 @@ const setUser = async (req, res) => {
   const { name, email, password, numero, site, user } = req.body;
   const logo = req.files.logo;
   try {
-    console.log(logo);
     const result = await cloudinary.uploader.upload(logo.tempFilePath, {
       folder: "tamarin-companies",
       resource_type: "auto",
@@ -19,6 +18,7 @@ const setUser = async (req, res) => {
     let PedidosArray = [];
     let OrcamentoArray = [];
     let MessageArray = [];
+    let SocialArray = [];
 
     const newUser = new User({
       logo: result.url,
@@ -29,10 +29,18 @@ const setUser = async (req, res) => {
       number: numero,
       site: site,
       users: user,
+      social: SocialArray,
       produto: ProdutoArray,
       pedidos: PedidosArray,
       orcamento: OrcamentoArray,
       message: MessageArray,
+      website: {
+        websiteNavbarFooterColor: "black",
+        websiteFontFooterColor: "white",
+        websiteColor: "white",
+        websiteFontColor: "black",
+        websiteCarousel: "",
+      },
     });
     newUser.save((err, message) => {
       if (err) console.log(err);
