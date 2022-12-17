@@ -49,7 +49,16 @@ const getUser = (req, res) => {
   User.find({ email: email, password: password })
     .then((response) => {
       res.send(response);
-      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const allUsers = (req, res) => {
+  User.find()
+    .then((response) => {
+      res.send(response);
     })
     .catch((err) => {
       console.log(err);
@@ -69,7 +78,6 @@ const deleteUser = (req, res) => {
 };
 
 const getEmpresa = (req, res) => {
-  const id = req.params.id;
   User.findOne({ _id: req.params.id })
     .then((response) => {
       res.send(response);
@@ -82,6 +90,7 @@ const getEmpresa = (req, res) => {
 module.exports = {
   setUser,
   getUser,
+  allUsers,
   deleteUser,
   getEmpresa,
 };

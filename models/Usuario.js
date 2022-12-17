@@ -29,6 +29,13 @@ const userSchema = new Schema({
   pedidos: Array,
   orcamento: Array,
   message: Array,
+  website: {
+    websiteNavbarFooterColor: String,
+    websiteFontFooterColor: String,
+    websiteColor: String,
+    websiteFontColor: String,
+    websiteCarousel: String,
+  },
 });
 
 const User = mongoose.model("user", userSchema);

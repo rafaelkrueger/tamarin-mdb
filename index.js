@@ -7,19 +7,14 @@ const app = express();
 const Message = require("./models/message");
 const User = require("./models/Usuario");
 //controllers
-
 const {
   setUser,
   getUser,
+  allUsers,
   deleteUser,
   getEmpresa,
 } = require("./controller/user-controller");
 const { setMessage, home, news } = require("./controller/system-controller");
-
-//connection
-const conn = require("./connection");
-const cloudinary = require("cloudinary").v2;
-const fileupload = require("express-fileupload");
 const {
   deleteProduto,
   updateProduto,
@@ -27,6 +22,11 @@ const {
   setProduto,
   deleteCategoria,
 } = require("./controller/products-controller");
+const { setWebsiteStyle } = require("./controller/website-controller");
+//connection
+const conn = require("./connection");
+const cloudinary = require("cloudinary").v2;
+const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8080;
 
 //Database Connection
@@ -61,15 +61,19 @@ app.get("/news", news);
 //user access routes
 app.post("/set-user", setUser);
 app.post("/get-user", getUser);
+app.post("/all", allUsers);
 app.post("/delete-user", deleteUser);
 app.get("/empresa/:id", getEmpresa);
 
-//products-handler
+//products handler routes
 app.post("/set-categoria", setCategoria);
 app.post("/delete-categoria", deleteCategoria);
 app.post("/set-produto", setProduto);
 app.patch("/update-produto", updateProduto);
 app.post("/delete-produto", deleteProduto);
+
+//website handler routes
+app.put("/website-style", setWebsiteStyle);
 
 app.post("/delete-pedido", async (req, res) => {
   const { empresa, id } = req.body;
