@@ -61,7 +61,7 @@ app.get("/news", news);
 //user access routes
 app.post("/set-user", setUser);
 app.post("/get-user", getUser);
-app.post("/all", allUsers);
+app.get("/all", allUsers);
 app.post("/delete-user", deleteUser);
 app.get("/empresa/:id", getEmpresa);
 
