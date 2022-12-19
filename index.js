@@ -23,6 +23,7 @@ const {
   deleteCategoria,
 } = require("./controller/products-controller");
 const { setWebsiteStyle } = require("./controller/website-controller");
+const { getPix, creditCard } = require("./controller/payment-controller");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -39,6 +40,9 @@ cloudinary.config({
 });
 
 //Middlewares
+app.set("view engine", "ejs");
+app.set("views", "./views");
+
 app.use(bodyParser.json({ limit: "100000mb" }));
 app.use(bodyParser.urlencoded({ limit: "100000mb", extended: true }));
 app.use(fileupload({ useTempFiles: true }));
@@ -74,6 +78,10 @@ app.post("/delete-produto", deleteProduto);
 
 //website handler routes
 app.patch("/website-style", setWebsiteStyle);
+
+//payment handler routes
+app.get("/pix/:valor", getPix);
+app.post("/credit-card", creditCard);
 
 app.post("/delete-pedido", async (req, res) => {
   const { empresa, id } = req.body;
