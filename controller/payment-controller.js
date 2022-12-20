@@ -57,11 +57,19 @@ const getPix = async (req, res) => {
   const cobResponse = await reqGN.post(`/v2/cob`, dataCob).catch((err) => {
     console.log(err);
   });
-  console.log(cobResponse);
   const qrcodeResponse = await reqGN
     .get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`)
     .catch((err) => console.log(err));
   res.send(qrcodeResponse.data.imagemQrcode);
+
+  setInterval(async () => {
+    const pix = await reqGN
+      .get(`/v2/cob/${cobResponse.data.txid}`)
+      .catch((err) => console.log(err));
+    if (pix.data.status) {
+      res.send("Pagamento Concluido!");
+    }
+  }, 1000);
 };
 
 const creditCard = (req, res) => {};
