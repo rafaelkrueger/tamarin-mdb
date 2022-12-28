@@ -23,7 +23,11 @@ const {
   deleteCategoria,
 } = require("./controller/products-controller");
 const { setWebsiteStyle } = require("./controller/website-controller");
-const { getPix, creditCard } = require("./controller/payment-controller");
+const {
+  getPix,
+  creditCard,
+  boleto,
+} = require("./controller/payment-controller");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -80,7 +84,8 @@ app.post("/delete-produto", deleteProduto);
 app.patch("/website-style", setWebsiteStyle);
 
 //payment handler routes
-app.get("/pix/:valor", getPix);
+app.post("/pix", getPix);
+app.post("/boleto", boleto);
 app.post("/credit-card", creditCard);
 
 app.post("/delete-pedido", async (req, res) => {

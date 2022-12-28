@@ -53,6 +53,12 @@ const setProduto = async (req, res) => {
             value: value,
             options: options,
             image: result.secure_url,
+            subImages: [
+              { subImage1: "" },
+              { subImage2: "" },
+              { subImage3: "" },
+              { subImage4: "" },
+            ],
             public_id: result.public_id,
             sold: 0,
             avaible: avaible,

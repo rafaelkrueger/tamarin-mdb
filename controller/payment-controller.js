@@ -1,10 +1,11 @@
 require("dotenv").config();
-const express = require("express");
 const User = require("../models/Usuario");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const https = require("https");
+const Gerencianet = require("gn-api-sdk-node");
+const stripe = require("stripe")(process.env.SK_LIVE_KEY);
 
 const cert = fs.readFileSync(
   path.resolve(__dirname, `../certs/${process.env.GN_CERT_PROD}`)
@@ -20,6 +21,21 @@ const credentials = Buffer.from(
 ).toString("base64");
 
 const getPix = async (req, res) => {
+  const {
+    empresa,
+    name,
+    email,
+    cpf,
+    password,
+    number,
+    cep,
+    state,
+    hood,
+    street,
+    streetNumber,
+    valor,
+    products,
+  } = req.body;
   const authResponse = await axios({
     method: "POST",
     url: `${process.env.GN_ENDPOINT}/oauth/token`,
@@ -48,7 +64,7 @@ const getPix = async (req, res) => {
       expiracao: 3600,
     },
     valor: {
-      original: `${parseFloat(req.params.valor).toFixed(2)}`,
+      original: `${parseFloat(valor).toFixed(2)}`,
     },
     chave: "de5d1466-f483-4911-839e-4ab70227dec6",
     solicitacaoPagador: "Cobrança",
@@ -61,11 +77,110 @@ const getPix = async (req, res) => {
     .get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`)
     .catch((err) => console.log(err));
   res.send(qrcodeResponse.data.imagemQrcode);
+  User.updateOne(
+    { _id: empresa },
+    {
+      $addToSet: {
+        users: {
+          name: name,
+          email: email,
+          cpf: cpf,
+          password: password,
+          number: number,
+          cep: cep,
+          state: state,
+          hood: hood,
+          street: street,
+          streetNumber: streetNumber,
+        },
+        pedidos: {
+          name: name,
+          email: email,
+          cpf: cpf,
+          number: number,
+          cep: cep,
+          state: state,
+          hood: hood,
+          street: street,
+          streetNumber: streetNumber,
+          products: products,
+        },
+      },
+    }
+  )
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 };
 
-const creditCard = (req, res) => {};
+const boleto = async (req, res) => {
+  const { name, email, cpf, birth, number, products, shipping } = req.body;
+  //   const options = {
+  //     client_id: process.env.GN_CLIENT_ID,
+  //     client_secret: process.env.GN_CLIENT_SECRET,
+  //     sandbox: false,
+  //   };
+  //   const body = {
+  //     payment: {
+  //       banking_billet: {
+  //         expire_at: "2023-01-5",
+  //         customer: {
+  //           name: name,
+  //           email: email,
+  //           cpf: cpf,
+  //           birth: "2002-11-25",
+  //           phone_number: number,
+  //         },
+  //       },
+  //     },
+  //     items: [
+  //       {
+  //         name: "Camiseta",
+  //         value: 2000,
+  //         amount: 2,
+  //       },
+  //     ],
+  //     shippings: [
+  //       {
+  //         name: "Default Shipping Cost",
+  //         value: 1000,
+  //       },
+  //     ],
+  //   };
+  //   var gerencianet = new Gerencianet(options);
+
+  //   gerencianet
+  //     .createOneStepCharge([], body)
+  //     .then((res) => console.log("Boleto Enviado "))
+  //     .catch((err) => res.send("Boleto Enviado"));
+};
+
+const creditCard = async (req, res) => {
+  const { name, amount, id, cpf } = req.body;
+
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: "BRL",
+      description: name,
+      payment_method: id,
+      confirm: true,
+    });
+    console.log("Payment", payment);
+    res.json({
+      message: "Paymeny Success",
+      success: true,
+    });
+  } catch (error) {
+    console.log("error", error.message);
+    res.json({
+      message: "payment Failed",
+      success: false,
+    });
+  }
+};
 
 module.exports = {
   getPix,
+  boleto,
   creditCard,
 };
