@@ -40,6 +40,7 @@ const userSchema = new Schema({
       number: String,
       cep: String,
       state: String,
+      city: String,
       hood: String,
       street: String,
       streetNumber: String,
