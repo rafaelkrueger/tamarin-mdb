@@ -24,7 +24,7 @@ insertPayment = async (
   valor,
   products
 ) => {
-  const emptyCartEmpty = [];
+  const emptyCart = [];
   const emptyWishList = [];
   User.updateOne(
     { _id: empresa },
