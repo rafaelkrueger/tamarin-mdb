@@ -28,6 +28,7 @@ const {
   creditCard,
   boleto,
 } = require("./controller/payment-controller");
+const { patchPedido } = require("./controller/pedidos-controller");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -88,16 +89,7 @@ app.post("/pix", getPix);
 app.post("/boleto", boleto);
 app.post("/credit-card", creditCard);
 
-app.post("/delete-pedido", async (req, res) => {
-  const { empresa, id } = req.body;
-  User.updateOne({ _id: empresa }, { $pull: { pedidos: { id: id } } })
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+app.patch("/pedido-entregue", patchPedido);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
