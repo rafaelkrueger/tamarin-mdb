@@ -8,6 +8,68 @@ const mongoose = require("mongoose");
 const Gerencianet = require("gn-api-sdk-node");
 const stripe = require("stripe")(process.env.SK_LIVE_KEY);
 
+insertPayment = async (
+  empresa,
+  name,
+  email,
+  cpf,
+  password,
+  number,
+  cep,
+  state,
+  hood,
+  city,
+  street,
+  streetNumber,
+  valor,
+  products
+) => {
+  const emptyCartEmpty = [];
+  const emptyWishList = [];
+  User.updateOne(
+    { _id: empresa },
+    {
+      $addToSet: {
+        users: {
+          _id: mongoose.Types.ObjectId(),
+          profileImage: "empty",
+          name: name,
+          email: email,
+          cpf: cpf,
+          password: password,
+          number: number,
+          cep: cep,
+          state: state,
+          city: city,
+          hood: hood,
+          street: street,
+          streetNumber: streetNumber,
+          savedCart: emptyCart,
+          wishList: emptyWishList,
+          myPurchase: products,
+        },
+        pedidos: {
+          _id: mongoose.Types.ObjectId(),
+          name: name,
+          email: email,
+          cpf: cpf,
+          number: number,
+          cep: cep,
+          state: state,
+          city: city,
+          hood: hood,
+          street: street,
+          streetNumber: streetNumber,
+          products: products,
+          valorTotal: valor,
+        },
+      },
+    }
+  )
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+};
+
 const cert = fs.readFileSync(
   path.resolve(__dirname, `../certs/${process.env.GN_CERT_PROD}`)
 );
@@ -78,48 +140,44 @@ const getPix = async (req, res) => {
   const qrcodeResponse = await reqGN
     .get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`)
     .catch((err) => console.log(err));
+  await insertPayment(
+    empresa,
+    name,
+    email,
+    cpf,
+    password,
+    number,
+    cep,
+    state,
+    hood,
+    city,
+    street,
+    streetNumber,
+    valor,
+    products
+  );
   res.send(qrcodeResponse.data.imagemQrcode);
-  User.updateOne(
-    { _id: empresa },
-    {
-      $addToSet: {
-        users: {
-          _id: mongoose.Types.ObjectId(),
-          name: name,
-          email: email,
-          cpf: cpf,
-          password: password,
-          number: number,
-          cep: cep,
-          state: state,
-          city: city,
-          hood: hood,
-          street: street,
-          streetNumber: streetNumber,
-        },
-        pedidos: {
-          _id: mongoose.Types.ObjectId(),
-          name: name,
-          email: email,
-          cpf: cpf,
-          number: number,
-          cep: cep,
-          state: state,
-          city: city,
-          hood: hood,
-          street: street,
-          streetNumber: streetNumber,
-          products: products,
-        },
-      },
-    }
-  )
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
 };
 
 const boleto = async (req, res) => {
-  const { name, email, cpf, birth, number, products, shipping } = req.body;
+  const {
+    empresa,
+    name,
+    email,
+    cpf,
+    password,
+    number,
+    cep,
+    state,
+    hood,
+    city,
+    street,
+    streetNumber,
+    valor,
+    products,
+    birth,
+    shipping,
+  } = req.body;
   //   const options = {
   //     client_id: process.env.GN_CLIENT_ID,
   //     client_secret: process.env.GN_CLIENT_SECRET,
@@ -158,6 +216,22 @@ const boleto = async (req, res) => {
   //     .createOneStepCharge([], body)
   //     .then((res) => console.log("Boleto Enviado "))
   //     .catch((err) => res.send("Boleto Enviado"));
+  await insertPayment(
+    empresa,
+    name,
+    email,
+    cpf,
+    password,
+    number,
+    cep,
+    state,
+    hood,
+    city,
+    street,
+    streetNumber,
+    valor,
+    products
+  );
 };
 
 const creditCard = async (req, res) => {

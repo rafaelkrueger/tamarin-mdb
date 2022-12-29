@@ -12,6 +12,7 @@ const userSchema = new Schema({
   users: [
     {
       _id: Schema.ObjectId,
+      profileImage: String,
       name: String,
       email: String,
       cpf: String,
@@ -23,6 +24,9 @@ const userSchema = new Schema({
       hood: String,
       street: String,
       streetNumber: String,
+      savedCart: Array,
+      wishList: Array,
+      myPurchase: Array,
     },
   ],
   categorias: Array,
@@ -61,6 +65,7 @@ const userSchema = new Schema({
       street: String,
       streetNumber: String,
       products: Array,
+      valorTotal: Number,
     },
   ],
   orcamento: Array,
