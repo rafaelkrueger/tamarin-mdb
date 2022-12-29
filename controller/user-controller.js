@@ -72,6 +72,38 @@ const allUsers = (req, res) => {
     });
 };
 
+const updateUser = async (req, res) => {
+  const { id, logo, name, email, password } = req.body;
+
+  const result = async () => {
+    if (logo.charAt(0) == "h") {
+      return logo;
+    } else {
+      const result = await cloudinary.uploader.upload(logo, {
+        folder: "samples",
+        resource_type: "auto",
+      });
+      return result;
+    }
+  };
+  const resultImage = await result();
+  User.updateOne(
+    { _id: id },
+    {
+      name: name,
+      email: email,
+      password: password,
+      logo: logo.charAt(0) == "h" ? resultImage : resultImage.secure_url,
+    }
+  )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const deleteUser = (req, res) => {
   const { id } = req.body;
   User.deleteOne({ _id: id })
@@ -98,6 +130,7 @@ module.exports = {
   setUser,
   getUser,
   allUsers,
+  updateUser,
   deleteUser,
   getEmpresa,
 };

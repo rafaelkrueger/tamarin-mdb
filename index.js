@@ -3,14 +3,12 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-//models
-const Message = require("./models/message");
-const User = require("./models/Usuario");
 //controllers
 const {
   setUser,
   getUser,
   allUsers,
+  updateUser,
   deleteUser,
   getEmpresa,
 } = require("./controller/user-controller");
@@ -71,6 +69,7 @@ app.get("/news", news);
 app.post("/set-user", setUser);
 app.post("/get-user", getUser);
 app.get("/all", allUsers);
+app.patch("/update-user", updateUser);
 app.post("/delete-user", deleteUser);
 app.get("/empresa/:id", getEmpresa);
 
@@ -89,6 +88,7 @@ app.post("/pix", getPix);
 app.post("/boleto", boleto);
 app.post("/credit-card", creditCard);
 
+//pedidos handler routes
 app.patch("/pedido-entregue", patchPedido);
 
 app.listen(PORT, () => {
