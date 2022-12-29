@@ -34,6 +34,7 @@ const userSchema = new Schema({
   ],
   pedidos: [
     {
+      _id: Schema.ObjectId,
       name: String,
       email: String,
       cpf: String,
