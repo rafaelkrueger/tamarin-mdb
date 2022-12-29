@@ -27,7 +27,7 @@ const setUser = async (req, res) => {
       password: password,
       number: numero,
       site: site,
-      users: user,
+      users: UserArray,
       social: SocialArray,
       produto: ProdutoArray,
       pedidos: PedidosArray,
