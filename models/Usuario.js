@@ -9,7 +9,22 @@ const userSchema = new Schema({
   email: String,
   number: String,
   site: String,
-  users: Array,
+  users: [
+    {
+      _id: Schema.ObjectId,
+      name: String,
+      email: String,
+      cpf: String,
+      password: String,
+      number: String,
+      cep: String,
+      state: String,
+      city: String,
+      hood: String,
+      street: String,
+      streetNumber: String,
+    },
+  ],
   categorias: Array,
   social: Array,
   produto: [

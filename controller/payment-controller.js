@@ -83,6 +83,7 @@ const getPix = async (req, res) => {
     {
       $addToSet: {
         users: {
+          _id: mongoose.Types.ObjectId(),
           name: name,
           email: email,
           cpf: cpf,
@@ -96,6 +97,7 @@ const getPix = async (req, res) => {
           streetNumber: streetNumber,
         },
         pedidos: {
+          _id: mongoose.Types.ObjectId(),
           name: name,
           email: email,
           cpf: cpf,
