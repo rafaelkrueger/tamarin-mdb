@@ -23,6 +23,7 @@ const {
 const { setWebsiteStyle } = require("./controller/website-controller");
 const {
   getPix,
+  verifyPix,
   creditCard,
   boleto,
 } = require("./controller/payment-controller");
@@ -89,6 +90,7 @@ app.patch("/website-style", setWebsiteStyle);
 
 //payment handler routes
 app.post("/pix", getPix);
+app.get("/pix-status/:txid", verifyPix);
 app.post("/boleto", boleto);
 app.post("/credit-card", creditCard);
 

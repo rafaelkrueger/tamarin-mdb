@@ -157,24 +157,50 @@ const getPix = async (req, res) => {
     valor,
     products
   );
-  res.write(qrcodeResponse.data.imagemQrcode);
-  res.write(cobId);
-  res.end();
+  res.end(
+    JSON.stringify({ qrcode: qrcodeResponse.data.imagemQrcode, txid: cobId })
+  );
 };
 
-const verifyPix = () => {
-  setInterval(async () => {
+const verifyPix = async (req, res) => {
+  const cobId = req.params.txid;
+  const authResponse = await axios({
+    method: "POST",
+    url: `${process.env.GN_ENDPOINT}/oauth/token`,
+    headers: {
+      Authorization: `Basic ${credentials}`,
+      "Content-Type": "application/json",
+    },
+    httpsAgent: agent,
+    data: {
+      grant_type: "client_credentials",
+    },
+  });
+
+  const accessToken = await authResponse.data?.access_token;
+
+  const reqGN = axios.create({
+    baseURL: process.env.GN_ENDPOINT,
+    httpsAgent: agent,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  let validation = "";
+  const interval = setInterval(async () => {
     await reqGN
       .get(`/v2/cob/${cobId}`)
-      .then((res) => {
-        if (res.data.satus !== "CONCLUIDA") {
-          console.log(res.data.status);
-        } else {
-          res.send("CONCLUIDA");
+      .then((response) => {
+        if (response.data.status === "CONCLUIDA") {
+          console.log(response.data.status);
+          validation = "CONCLUIDA";
+          clearInterval(interval);
+          res.end(validation);
         }
       })
       .catch((err) => console.log(err));
-  }, 1000);
+  }, 2000);
 };
 
 const boleto = async (req, res) => {
@@ -280,5 +306,6 @@ const creditCard = async (req, res) => {
 module.exports = {
   getPix,
   boleto,
+  verifyPix,
   creditCard,
 };
