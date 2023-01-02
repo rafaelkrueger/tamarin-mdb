@@ -137,6 +137,7 @@ const getPix = async (req, res) => {
   const cobResponse = await reqGN.post(`/v2/cob`, dataCob).catch((err) => {
     console.log(err);
   });
+  const cobId = cobResponse.data.txid;
   const qrcodeResponse = await reqGN
     .get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`)
     .catch((err) => console.log(err));
@@ -156,7 +157,24 @@ const getPix = async (req, res) => {
     valor,
     products
   );
-  res.send(qrcodeResponse.data.imagemQrcode);
+  res.write(qrcodeResponse.data.imagemQrcode);
+  res.write(cobId);
+  res.end();
+};
+
+const verifyPix = () => {
+  setInterval(async () => {
+    await reqGN
+      .get(`/v2/cob/${cobId}`)
+      .then((res) => {
+        if (res.data.satus !== "CONCLUIDA") {
+          console.log(res.data.status);
+        } else {
+          res.send("CONCLUIDA");
+        }
+      })
+      .catch((err) => console.log(err));
+  }, 1000);
 };
 
 const boleto = async (req, res) => {
