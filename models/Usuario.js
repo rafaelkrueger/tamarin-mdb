@@ -37,7 +37,14 @@ const userSchema = new Schema({
       description: String,
       category: String,
       value: Number,
-      options: Array,
+      options: [
+        {
+          id: String,
+          type: String,
+          price: Number,
+        },
+        { id: String },
+      ],
       image: String,
       subImages: [
         { subImage1: "" },
