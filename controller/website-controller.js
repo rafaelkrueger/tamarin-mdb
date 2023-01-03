@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/Usuario");
 const cloudinary = require("cloudinary").v2;
 
-const setWebsiteStyle = async (req, res) => {
+const setWebsiteAllStyle = async (req, res) => {
   try {
     const {
       empresa,
@@ -47,6 +47,40 @@ const setWebsiteStyle = async (req, res) => {
   }
 };
 
+const setWebsiteCardStyle = async (req, res) => {
+  try {
+    const {
+      empresa,
+      websiteCardBackgroundColor,
+      websiteCardFontColor,
+      websiteDiscountColor,
+      websitePriceColor,
+      websiteHeartTagColor,
+      websiteDiscountTagColor,
+      websiteButton,
+    } = req.body;
+    User.updateOne(
+      { _id: empresa },
+      {
+        $set: {
+          "website.websiteCardBackgroundColor": websiteCardBackgroundColor,
+          "website.websiteCardFontColor": websiteCardFontColor,
+          "website.websiteDiscountColor": websiteDiscountColor,
+          "website.websitePriceColor": websitePriceColor,
+          "website.websiteHeartTagColor": websiteHeartTagColor,
+          "website.websiteDiscountTagColor": websiteDiscountTagColor,
+          "website.websiteButton": websiteButton,
+        },
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
-  setWebsiteStyle,
+  setWebsiteAllStyle,
+  setWebsiteCardStyle,
 };

@@ -76,6 +76,14 @@ const userSchema = new Schema({
     websiteColor: String,
     websiteFontColor: String,
     websiteCarousel: String,
+
+    websiteCardBackgroundColor: String,
+    websiteCardFontColor: String,
+    websiteDiscountColor: String,
+    websitePriceColor: String,
+    websiteHeartTagColor: String,
+    websiteDiscountTagColor: String,
+    websiteButton: String,
   },
 });
 

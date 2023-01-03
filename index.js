@@ -20,7 +20,10 @@ const {
   setProduto,
   deleteCategoria,
 } = require("./controller/products-controller");
-const { setWebsiteStyle } = require("./controller/website-controller");
+const {
+  setWebsiteAllStyle,
+  setWebsiteCardStyle,
+} = require("./controller/website-controller");
 const {
   getPix,
   verifyPix,
@@ -86,7 +89,8 @@ app.patch("/update-produto", updateProduto);
 app.post("/delete-produto", deleteProduto);
 
 //website handler routes
-app.patch("/website-style", setWebsiteStyle);
+app.patch("/website-style", setWebsiteAllStyle);
+app.patch("/website-card-style", setWebsiteCardStyle);
 
 //payment handler routes
 app.post("/pix", getPix);
