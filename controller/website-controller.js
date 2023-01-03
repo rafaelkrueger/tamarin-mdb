@@ -58,6 +58,7 @@ const setWebsiteCardStyle = async (req, res) => {
       websiteHeartTagColor,
       websiteDiscountTagColor,
       websiteButton,
+      websiteButtonFont,
     } = req.body;
     User.updateOne(
       { _id: empresa },
@@ -70,6 +71,7 @@ const setWebsiteCardStyle = async (req, res) => {
           "website.websiteHeartTagColor": websiteHeartTagColor,
           "website.websiteDiscountTagColor": websiteDiscountTagColor,
           "website.websiteButton": websiteButton,
+          "website.websiteButtonFont": websiteButtonFont,
         },
       }
     )
