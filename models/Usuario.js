@@ -84,7 +84,7 @@ const userSchema = new Schema({
     websiteHeartTagColor: String,
     websiteDiscountTagColor: String,
     websiteButton: String,
-    websiteButtonColor: String,
+    websiteButtonFont: String,
   },
 });
 
