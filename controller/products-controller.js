@@ -37,11 +37,41 @@ const setProduto = async (req, res) => {
       image,
       options,
       avaible,
+      subImages,
     } = req.body;
+
     const result = await cloudinary.uploader.upload(image, {
       folder: "samples",
       resource_type: "auto",
     });
+    const sub1 = subImages.subI1
+      ? await cloudinary.uploader.upload(subImages.subI1, {
+          folder: "samples",
+          resource_type: "auto",
+        })
+      : "";
+
+    const sub2 = subImages.subI2
+      ? await cloudinary.uploader.upload(subImages.subI2, {
+          folder: "samples",
+          resource_type: "auto",
+        })
+      : "";
+
+    const sub3 = subImages.subI3
+      ? await cloudinary.uploader.upload(subImages.subI3, {
+          folder: "samples",
+          resource_type: "auto",
+        })
+      : "";
+
+    const sub4 = subImages.subI4
+      ? await cloudinary.uploader.upload(subImages.subI4, {
+          folder: "samples",
+          resource_type: "auto",
+        })
+      : "";
+
     User.updateOne(
       { _id: empresa },
       {
@@ -53,12 +83,12 @@ const setProduto = async (req, res) => {
             value: value,
             options: options,
             image: result.secure_url,
-            subImages: [
-              { subImage1: "" },
-              { subImage2: "" },
-              { subImage3: "" },
-              { subImage4: "" },
-            ],
+            subImages: {
+              subImage1: sub1.secure_url,
+              subImage2: sub2.secure_url,
+              subImage3: sub3.secure_url,
+              subImage4: sub4.secure_url,
+            },
             public_id: result.public_id,
             sold: 0,
             avaible: avaible,

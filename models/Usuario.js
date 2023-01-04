@@ -39,12 +39,12 @@ const userSchema = new Schema({
       value: Number,
       options: Array,
       image: String,
-      subImages: [
-        { subImage1: "" },
-        { subImage2: "" },
-        { subImage3: "" },
-        { subImage4: "" },
-      ],
+      subImages: {
+        subImage1: String,
+        subImage2: String,
+        subImage3: String,
+        subImage4: String,
+      },
       public_id: String,
       sold: Number,
       avaible: Number,
