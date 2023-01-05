@@ -85,6 +85,20 @@ const userSchema = new Schema({
     websiteDiscountTagColor: String,
     websiteButton: String,
     websiteButtonFont: String,
+
+    websiteDetailedBackground: String,
+    websiteDetailedFont: String,
+    websiteDetailedTitleFont: String,
+    websiteDetailedDescriptionFont: String,
+    websiteDetailedOptionsColor: String,
+    websiteDetailedOptionsFont: String,
+    websiteDetailedDiscountColor: String,
+    websiteDetailedPriceColor: String,
+    websiteDetailedHeartColor: String,
+    websiteDetailedButtonBuy: String,
+    websiteDetailedButtonFontBuy: String,
+    websiteDetailedButtonCart: String,
+    websiteDetailedButtonFontCart: String,
   },
 });
 

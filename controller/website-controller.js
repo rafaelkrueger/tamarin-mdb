@@ -82,7 +82,55 @@ const setWebsiteCardStyle = async (req, res) => {
   }
 };
 
+const setWebsiteDetailsStyle = async (req, res) => {
+  try {
+    const {
+      empresa,
+      websiteDetailedBackground,
+      websiteDetailedFont,
+      websiteDetailedTitleFont,
+      websiteDetailedDescriptionFont,
+      websiteDetailedOptionsColor,
+      websiteDetailedOptionsFont,
+      websiteDetailedDiscountColor,
+      websiteDetailedPriceColor,
+      websiteDetailedHeartColor,
+      websiteDetailedButtonBuy,
+      websiteDetailedButtonFontBuy,
+      websiteDetailedButtonCart,
+      websiteDetailedButtonFontCart,
+    } = req.body;
+    User.updateOne(
+      { _id: empresa },
+      {
+        $set: {
+          "website.websiteDetailedBackground": websiteDetailedBackground,
+          "website.websiteDetailedFont": websiteDetailedFont,
+          "website.websiteDetailedTitleFont": websiteDetailedTitleFont,
+          "website.websiteDetailedDescriptionFont":
+            websiteDetailedDescriptionFont,
+          "website.websiteDetailedOptionsColor": websiteDetailedOptionsColor,
+          "website.websiteDetailedOptionsFont": websiteDetailedOptionsFont,
+          "website.websiteDetailedDiscountColor": websiteDetailedDiscountColor,
+          "website.websiteDetailedPriceColor": websiteDetailedPriceColor,
+          "website.websiteDetailedHeartColor": websiteDetailedHeartColor,
+          "website.websiteDetailedButtonBuy": websiteDetailedButtonBuy,
+          "website.websiteDetailedButtonFontBuy": websiteDetailedButtonFontBuy,
+          "website.websiteDetailedButtonCart": websiteDetailedButtonCart,
+          "website.websiteDetailedButtonFontCart":
+            websiteDetailedButtonFontCart,
+        },
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   setWebsiteAllStyle,
   setWebsiteCardStyle,
+  setWebsiteDetailsStyle,
 };
