@@ -32,7 +32,11 @@ const {
   boleto,
 } = require("./controller/payment-controller");
 const { patchPedido } = require("./controller/pedidos-controller");
-const { deleteCostumer } = require("./controller/costumers-controller");
+const {
+  deleteCostumer,
+  createCostumer,
+  findCostumer,
+} = require("./controller/costumers-controller");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -80,6 +84,8 @@ app.post("/delete-user", deleteUser);
 app.get("/empresa/:id", getEmpresa);
 
 //costumers access rooutes
+app.post("/find-costumer", findCostumer);
+app.post("/create-costumer", createCostumer);
 app.patch("/delete-costumer", deleteCostumer);
 
 //products handler routes
