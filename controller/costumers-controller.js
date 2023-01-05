@@ -10,11 +10,16 @@ const findCostumer = async (req, res) => {
 
   const costumerExists = await User.findOne({
     _id: empresa,
-    "users.email": email,
-    "users.password": password,
+    "users.email": "dandarastefany@gmail.com",
+    "users.password": "1000",
   });
   if (costumerExists) {
-    res.send(costumerExists);
+    const profile = costumerExists.users.filter((val) => {
+      if (val.email == email && val.password == password) {
+        return val;
+      }
+    });
+    res.send(profile);
   } else {
     res.send("");
   }
