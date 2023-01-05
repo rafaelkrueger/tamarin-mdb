@@ -14,7 +14,7 @@ const findCostumer = async (req, res) => {
     "users.password": password,
   });
   if (costumerExists) {
-    res.send("logado");
+    res.send(costumerExists);
   } else {
     res.send("");
   }
