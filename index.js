@@ -77,12 +77,12 @@ app.post("/set-message", setMessage);
 app.get("/news", news);
 
 //user access routes
+app.get("/empresa/:site", getEmpresa);
 app.post("/set-user", setUser);
 app.post("/get-user", getUser);
 app.get("/all", allUsers);
 app.patch("/update-user", updateUser);
 app.post("/delete-user", deleteUser);
-app.get("/empresa/:id", getEmpresa);
 
 //costumers access rooutes
 app.post("/find-costumer", findCostumer);

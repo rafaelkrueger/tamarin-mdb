@@ -117,7 +117,7 @@ const deleteUser = (req, res) => {
 };
 
 const getEmpresa = (req, res) => {
-  User.findOne({ _id: req.params.id })
+  User.findOne({ site: req.params.site })
     .then((response) => {
       res.send(response);
     })
