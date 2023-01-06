@@ -23,14 +23,13 @@ insertPayment = async (
   valor,
   products
 ) => {
-  const emptyCart = [];
-  const emptyWishList = [];
+  const orderId = mongoose.Types.ObjectId();
   User.updateOne(
     { _id: empresa },
     {
       $addToSet: {
         pedidos: {
-          _id: mongoose.Types.ObjectId(),
+          _id: orderId,
           name: name,
           email: email,
           cpf: cpf,
@@ -45,31 +44,42 @@ insertPayment = async (
         },
       },
     }
-  );
+  )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   User.updateOne(
     { _id: empresa, "users.email": email },
     {
-      users: {
-        $AddToSet: {
-          myPurchase: [
-            {
-              name: name,
-              email: email,
-              cpf: cpf,
-              number: number,
-              cep: cep,
-              state: state,
-              city: city,
-              street: street,
-              streetNumber: streetNumber,
-              products: products,
-              valorTotal: valor,
-            },
-          ],
-        },
+      $addToSet: {
+        "users.$.myPurchase": [
+          {
+            _id: orderId,
+            name: name,
+            email: email,
+            cpf: cpf,
+            number: number,
+            cep: cep,
+            state: state,
+            city: city,
+            street: street,
+            streetNumber: streetNumber,
+            products: products,
+            valorTotal: valor,
+          },
+        ],
       },
     }
-  );
+  )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const cert = fs.readFileSync(
