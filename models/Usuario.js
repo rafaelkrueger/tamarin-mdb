@@ -5,6 +5,7 @@ const userSchema = new Schema({
   logo: String,
   logo_id: String,
   name: String,
+  tagName: String,
   password: String,
   email: String,
   number: String,

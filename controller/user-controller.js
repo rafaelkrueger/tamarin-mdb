@@ -6,7 +6,8 @@ const fileupload = require("express-fileupload");
 
 const setUser = async (req, res) => {
   try {
-    const { name, email, password, numero, site, user, logo } = req.body;
+    const { name, tagName, email, password, numero, site, user, logo } =
+      req.body;
     const result = await cloudinary.uploader.upload(logo, {
       folder: "tamarin-companies",
       resource_type: "auto",
@@ -23,6 +24,7 @@ const setUser = async (req, res) => {
       logo: result.url,
       logo_id: result._id,
       name: name,
+      tagName: tagName,
       email: email,
       password: password,
       number: numero,
