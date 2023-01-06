@@ -10,8 +10,8 @@ const findCostumer = async (req, res) => {
 
   const costumerExists = await User.findOne({
     _id: empresa,
-    "users.email": "dandarastefany@gmail.com",
-    "users.password": "1000",
+    "users.email": email,
+    "users.password": password,
   });
   if (costumerExists) {
     const profile = costumerExists.users.filter((val) => {
@@ -26,7 +26,7 @@ const findCostumer = async (req, res) => {
 };
 
 const createCostumer = async (req, res) => {
-  const { empresa, name, email, cpf, password, number } = req.body;
+  const { empresa, name, email, password, number } = req.body;
   const emptyCart = [];
   const emptyWishList = [];
   const emptyProducts = [];
@@ -45,9 +45,9 @@ const createCostumer = async (req, res) => {
             profileImage: "empty",
             name: name,
             email: email,
-            cpf: cpf,
-            password: password,
             number: number,
+            password: password,
+            cpf: "",
             cep: "",
             state: "",
             city: "",
@@ -81,8 +81,58 @@ const deleteCostumer = async (req, res) => {
     });
 };
 
+const facebookCostumer = async (req, res) => {
+  const { empresa, profileImage, email, name, number } = req.body;
+  const emptyCart = [];
+  const emptyWishList = [];
+  const emptyProducts = [];
+
+  const costumerExists = await User.findOne({
+    _id: empresa,
+    "users.email": email,
+  });
+
+  if (costumerExists) {
+    const profile = costumerExists.users.filter((val) => {
+      if (val.email == email) {
+        return val;
+      }
+    });
+    res.send(profile);
+  } else {
+    User.updateOne(
+      { _id: empresa },
+      {
+        $addToSet: {
+          users: {
+            _id: mongoose.Types.ObjectId(),
+            profileImage: profileImage,
+            name: name,
+            email: email,
+            cpf: "",
+            password: "",
+            number: number,
+            cep: "",
+            state: "",
+            city: "",
+            hood: "",
+            street: "",
+            streetNumber: "",
+            savedCart: emptyCart,
+            wishList: emptyWishList,
+            myPurchase: emptyProducts,
+          },
+        },
+      }
+    )
+      .then((response) => res.send("Usuário criado com sucesso!"))
+      .catch((err) => console.log(err));
+  }
+};
+
 module.exports = {
   deleteCostumer,
   createCostumer,
   findCostumer,
+  facebookCostumer,
 };
