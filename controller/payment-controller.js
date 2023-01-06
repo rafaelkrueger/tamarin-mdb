@@ -17,7 +17,6 @@ insertPayment = async (
   number,
   cep,
   state,
-  hood,
   city,
   street,
   streetNumber,
@@ -30,24 +29,6 @@ insertPayment = async (
     { _id: empresa },
     {
       $addToSet: {
-        users: {
-          _id: mongoose.Types.ObjectId(),
-          profileImage: "empty",
-          name: name,
-          email: email,
-          cpf: cpf,
-          password: password,
-          number: number,
-          cep: cep,
-          state: state,
-          city: city,
-          hood: hood,
-          street: street,
-          streetNumber: streetNumber,
-          savedCart: emptyCart,
-          wishList: emptyWishList,
-          myPurchase: products,
-        },
         pedidos: {
           _id: mongoose.Types.ObjectId(),
           name: name,
@@ -57,7 +38,6 @@ insertPayment = async (
           cep: cep,
           state: state,
           city: city,
-          hood: hood,
           street: street,
           streetNumber: streetNumber,
           products: products,
@@ -65,9 +45,31 @@ insertPayment = async (
         },
       },
     }
-  )
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+  );
+  User.updateOne(
+    { _id: empresa, "users.email": email },
+    {
+      users: {
+        $AddToSet: {
+          myPurchase: [
+            {
+              name: name,
+              email: email,
+              cpf: cpf,
+              number: number,
+              cep: cep,
+              state: state,
+              city: city,
+              street: street,
+              streetNumber: streetNumber,
+              products: products,
+              valorTotal: valor,
+            },
+          ],
+        },
+      },
+    }
+  );
 };
 
 const cert = fs.readFileSync(
@@ -93,7 +95,6 @@ const getPix = async (req, res) => {
     number,
     cep,
     state,
-    hood,
     city,
     street,
     streetNumber,
@@ -150,7 +151,6 @@ const getPix = async (req, res) => {
     number,
     cep,
     state,
-    hood,
     city,
     street,
     streetNumber,

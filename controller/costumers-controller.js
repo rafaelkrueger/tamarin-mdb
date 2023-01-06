@@ -26,7 +26,19 @@ const findCostumer = async (req, res) => {
 };
 
 const createCostumer = async (req, res) => {
-  const { empresa, name, email, password, number } = req.body;
+  const {
+    empresa,
+    name,
+    email,
+    password,
+    number,
+    cpf,
+    cep,
+    state,
+    city,
+    street,
+    streetNumber,
+  } = req.body;
   const emptyCart = [];
   const emptyWishList = [];
   const emptyProducts = [];
@@ -47,13 +59,12 @@ const createCostumer = async (req, res) => {
             email: email,
             number: number,
             password: password,
-            cpf: "",
-            cep: "",
-            state: "",
-            city: "",
-            hood: "",
-            street: "",
-            streetNumber: "",
+            cpf: cpf == undefined ? "" : cpf,
+            cep: cep == undefined ? "" : cep,
+            state: state == undefined ? "" : state,
+            city: city == undefined ? "" : city,
+            street: street == undefined ? "" : street,
+            streetNumber: streetNumber == undefined ? "" : streetNumber,
             savedCart: emptyCart,
             wishList: emptyWishList,
             myPurchase: emptyProducts,
@@ -61,10 +72,10 @@ const createCostumer = async (req, res) => {
         },
       }
     )
-      .then((response) => res.send("Usuário criado com sucesso!"))
+      .then((response) => res.send("success"))
       .catch((err) => console.log(err));
   } else {
-    res.send("Erro: usuário já existente!");
+    res.send("Erro: usuário com email já existente!");
   }
 };
 
