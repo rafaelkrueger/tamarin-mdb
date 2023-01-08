@@ -40,10 +40,14 @@ const setProduto = async (req, res) => {
       subImages,
     } = req.body;
 
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "samples",
-      resource_type: "auto",
-    });
+    const result =
+      image.charAt(0) != "h"
+        ? await cloudinary.uploader.upload(image, {
+            folder: "samples",
+            resource_type: "auto",
+          })
+        : image;
+
     const sub1 = subImages.subI1
       ? await cloudinary.uploader.upload(subImages.subI1, {
           folder: "samples",
@@ -82,7 +86,7 @@ const setProduto = async (req, res) => {
             category: category,
             value: value,
             options: options,
-            image: result.secure_url,
+            image: image.charAt(0) != "h" ? result.secure_url : result,
             subImages: {
               subImage1: sub1.secure_url,
               subImage2: sub2.secure_url,
