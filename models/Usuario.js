@@ -30,7 +30,12 @@ const userSchema = new Schema({
     },
   ],
   categorias: Array,
-  social: Array,
+  social: {
+    instaUsername: String,
+    instaPassword: String,
+    faceUsername: String,
+    facePassword: String,
+  },
   produto: [
     {
       product: String,

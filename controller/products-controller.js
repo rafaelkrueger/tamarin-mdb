@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/Usuario");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
+const { IgApiClient } = require("instagram-private-api");
+const { get } = require("request-promise");
 
 const setCategoria = (req, res) => {
   const { empresa, category } = req.body;
@@ -38,6 +40,8 @@ const setProduto = async (req, res) => {
       options,
       avaible,
       subImages,
+      instaUsername,
+      instaPassword,
     } = req.body;
 
     const result =
@@ -75,6 +79,21 @@ const setProduto = async (req, res) => {
           resource_type: "auto",
         })
       : "";
+
+    const postToInsta = async () => {
+      const ig = new IgApiClient();
+      ig.state.generateDevice(instaUsername);
+      await ig.account.login(instaUsername, instaPassword);
+      const imageBuffer = await get({
+        url: result,
+        encoding: null,
+      });
+      await ig.publish.photo({
+        file: imageBuffer,
+        caption: description,
+      });
+    };
+    await postToInsta();
 
     User.updateOne(
       { _id: empresa },

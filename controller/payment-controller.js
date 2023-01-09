@@ -287,15 +287,15 @@ const boleto = async (req, res) => {
   // );
 };
 
-const creditCard = async (req, res) => {
-  const { name, amount, id, cpf } = req.body;
+const cardPayment = async (req, res) => {
+  const { name, amount, id } = req.body;
 
   try {
     const payment = await stripe.paymentIntents.create({
       amount: amount,
       currency: "BRL",
       description: name,
-      payment_method: id,
+      payment_method: "card",
       confirm: true,
     });
     console.log("Payment", payment);
@@ -316,5 +316,5 @@ module.exports = {
   getPix,
   boleto,
   verifyPix,
-  creditCard,
+  cardPayment,
 };

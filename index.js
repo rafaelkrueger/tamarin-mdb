@@ -28,7 +28,7 @@ const {
 const {
   getPix,
   verifyPix,
-  creditCard,
+  cardPayment,
   boleto,
 } = require("./controller/payment-controller");
 const { patchPedido } = require("./controller/pedidos-controller");
@@ -106,7 +106,7 @@ app.patch("/website-details-style", setWebsiteDetailsStyle);
 app.post("/pix", getPix);
 app.get("/pix-status/:txid", verifyPix);
 app.post("/boleto", boleto);
-app.post("/credit-card", creditCard);
+app.post("/card-payment", cardPayment);
 
 //pedidos handler routes
 app.patch("/pedido-entregue", patchPedido);

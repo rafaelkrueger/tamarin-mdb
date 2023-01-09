@@ -6,7 +6,17 @@ const fileupload = require("express-fileupload");
 
 const setUser = async (req, res) => {
   try {
-    const { name, email, password, numero, site, user, logo } = req.body;
+    const {
+      name,
+      email,
+      password,
+      numero,
+      site,
+      user,
+      logo,
+      instaUsername,
+      instaPassword,
+    } = req.body;
     const result = await cloudinary.uploader.upload(logo, {
       folder: "tamarin-companies",
       resource_type: "auto",
@@ -17,8 +27,6 @@ const setUser = async (req, res) => {
     let PedidosArray = [];
     let OrcamentoArray = [];
     let MessageArray = [];
-    let SocialArray = [];
-
     const newUser = new User({
       logo: result.url,
       logo_id: result._id,
@@ -28,11 +36,14 @@ const setUser = async (req, res) => {
       number: numero,
       site: site,
       users: UserArray,
-      social: SocialArray,
       produto: ProdutoArray,
       pedidos: PedidosArray,
       orcamento: OrcamentoArray,
       message: MessageArray,
+      social: {
+        instaUsername: instaUsername,
+        instaPassword: instaPassword,
+      },
       website: {
         websiteNavbarFooterColor: "black",
         websiteFontFooterColor: "white",
