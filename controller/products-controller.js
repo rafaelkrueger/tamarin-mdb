@@ -42,6 +42,7 @@ const setProduto = async (req, res) => {
       subImages,
       instaUsername,
       instaPassword,
+      publish,
     } = req.body;
 
     const result =
@@ -85,7 +86,7 @@ const setProduto = async (req, res) => {
       ig.state.generateDevice(instaUsername);
       await ig.account.login(instaUsername, instaPassword);
       const imageBuffer = await get({
-        url: result,
+        url: result.secure_url,
         encoding: null,
       });
       await ig.publish.photo({
@@ -93,7 +94,9 @@ const setProduto = async (req, res) => {
         caption: description,
       });
     };
-    await postToInsta();
+    if (publish) {
+      await postToInsta();
+    }
 
     User.updateOne(
       { _id: empresa },
