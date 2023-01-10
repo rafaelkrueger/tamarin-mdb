@@ -93,6 +93,10 @@ const setProduto = async (req, res) => {
         file: imageBuffer,
         caption: description,
       });
+      await ig.publish.story({
+        file: imageBuffer,
+        caption: description,
+      });
     };
     if (publish) {
       await postToInsta();
