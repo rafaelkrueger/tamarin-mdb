@@ -37,6 +37,7 @@ const {
   createCostumer,
   findCostumer,
   facebookCostumer,
+  setWishlistCostumer,
 } = require("./controller/costumers-controller");
 //connection
 const conn = require("./connection");
@@ -89,6 +90,7 @@ app.post("/find-costumer", findCostumer);
 app.post("/create-costumer", createCostumer);
 app.patch("/delete-costumer", deleteCostumer);
 app.post("/facebook-costumer", facebookCostumer);
+app.post("/set-wishlist-costumer", setWishlistCostumer);
 
 //products handler routes
 app.post("/set-categoria", setCategoria);

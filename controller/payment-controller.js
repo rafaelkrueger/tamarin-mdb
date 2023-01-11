@@ -214,61 +214,61 @@ const verifyPix = async (req, res) => {
 };
 
 const boleto = async (req, res) => {
-  // const {
-  //   empresa,
-  //   name,
-  //   email,
-  //   cpf,
-  //   password,
-  //   number,
-  //   cep,
-  //   state,
-  //   hood,
-  //   city,
-  //   street,
-  //   streetNumber,
-  //   valor,
-  //   products,
-  //   birth,
-  //   shipping,
-  // } = req.body;
-  // const options = {
-  //   client_id: process.env.GN_CLIENT_ID,
-  //   client_secret: process.env.GN_CLIENT_SECRET,
-  //   sandbox: false,
-  // };
-  // const body = {
-  //   payment: {
-  //     banking_billet: {
-  //       expire_at: "2023-01-15",
-  //       customer: {
-  //         name: name,
-  //         email: email,
-  //         cpf: cpf,
-  //         birth: "2002-11-25",
-  //         phone_number: number,
-  //       },
-  //     },
-  //   },
-  //   items: [
-  //     {
-  //       name: "Camiseta",
-  //       value: 2000,
-  //       amount: 2,
-  //     },
-  //   ],
-  //   shippings: [
-  //     {
-  //       name: "Default Shipping Cost",
-  //       value: 1000,
-  //     },
-  //   ],
-  // };
-  // var gerencianet = new Gerencianet(options);
-  // gerencianet
-  //   .createOneStepCharge([], body)
-  //   .then((response) => res.send(response))
-  //   .catch((err) => console.log(err.data.error_description));
+  const {
+    empresa,
+    name,
+    email,
+    cpf,
+    password,
+    number,
+    cep,
+    state,
+    hood,
+    city,
+    street,
+    streetNumber,
+    valor,
+    products,
+    birth,
+    shipping,
+  } = req.body;
+  const options = {
+    client_id: process.env.GN_CLIENT_ID,
+    client_secret: process.env.GN_CLIENT_SECRET,
+    sandbox: false,
+  };
+  const body = {
+    payment: {
+      banking_billet: {
+        expire_at: "2023-01-15",
+        customer: {
+          name: name,
+          email: email,
+          cpf: cpf,
+          birth: "2002-11-25",
+          phone_number: number,
+        },
+      },
+    },
+    items: [
+      {
+        name: "Camiseta",
+        value: 2000,
+        amount: 2,
+      },
+    ],
+    shippings: [
+      {
+        name: "Default Shipping Cost",
+        value: 1000,
+      },
+    ],
+  };
+  var gerencianet = new Gerencianet(options);
+  gerencianet
+    .createOneStepCharge([], body)
+    .then((response) => res.send(response))
+    .catch((err) => console.log(err.data.error_description));
   // await insertPayment(
   //   empresa,
   //   name,

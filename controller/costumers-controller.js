@@ -141,9 +141,29 @@ const facebookCostumer = async (req, res) => {
   }
 };
 
+const setWishlistCostumer = async (req, res) => {
+  const { empresa, email, product } = req.body;
+
+  User.updateOne(
+    { _id: empresa, "users.email": email },
+    {
+      $addToSet: {
+        "users.$.wishList": product,
+      },
+    }
+  )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   deleteCostumer,
   createCostumer,
   findCostumer,
   facebookCostumer,
+  setWishlistCostumer,
 };
