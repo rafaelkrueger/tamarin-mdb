@@ -27,6 +27,7 @@ const setUser = async (req, res) => {
     let PedidosArray = [];
     let OrcamentoArray = [];
     let MessageArray = [];
+    let cupomArray = [];
     const newUser = new User({
       logo: result.url,
       logo_id: result._id,
@@ -51,6 +52,7 @@ const setUser = async (req, res) => {
         websiteFontColor: "black",
         websiteCarousel: "",
       },
+      cupom: cupomArray,
     });
     newUser.save((err, message) => {
       if (err) console.log(err);

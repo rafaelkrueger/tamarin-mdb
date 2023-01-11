@@ -106,6 +106,7 @@ const userSchema = new Schema({
     websiteDetailedButtonCart: String,
     websiteDetailedButtonFontCart: String,
   },
+  cupom: Array,
 });
 
 const User = mongoose.model("user", userSchema);
