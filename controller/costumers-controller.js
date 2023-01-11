@@ -160,10 +160,25 @@ const setWishlistCostumer = async (req, res) => {
     });
 };
 
+const removeWishlistCostumer = async (req, res) => {
+  const { empresa, email, product } = req.body;
+  User.updateOne(
+    { _id: empresa, "users.email": email },
+    { $pull: { "users.$.wishList": { _id: product } } }
+  )
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   deleteCostumer,
   createCostumer,
   findCostumer,
   facebookCostumer,
   setWishlistCostumer,
+  removeWishlistCostumer,
 };
