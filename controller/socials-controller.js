@@ -23,6 +23,7 @@ const removeInstagramFollowers = async (req, res) => {
       console.error(`An error occurred: ${err.message}`);
     }
   }
+  res.send("Unfollow was successful");
 };
 
 module.exports = {
