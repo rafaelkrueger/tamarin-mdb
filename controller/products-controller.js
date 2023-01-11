@@ -40,6 +40,7 @@ const setProduto = async (req, res) => {
       options,
       avaible,
       subImages,
+      discount,
       instaUsername,
       instaPassword,
       publish,
@@ -123,6 +124,7 @@ const setProduto = async (req, res) => {
             sold: 0,
             avaible: avaible,
             rating: 0,
+            discount: discount,
           },
         },
       }

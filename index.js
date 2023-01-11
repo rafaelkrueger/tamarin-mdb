@@ -3,6 +3,7 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
+const path = require("path");
 //controllers
 const {
   setUser,
@@ -60,6 +61,7 @@ app.set("views", "./views");
 
 app.use(bodyParser.json({ limit: "100000mb" }));
 app.use(bodyParser.urlencoded({ limit: "100000mb", extended: true }));
+app.use(express.static(path.join(__dirname, "views")));
 app.use(fileupload({ useTempFiles: true }));
 app.use(cors());
 app.use((req, res, next) => {

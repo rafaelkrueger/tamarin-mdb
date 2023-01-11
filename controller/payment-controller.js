@@ -291,14 +291,12 @@ const cardPayment = async (req, res) => {
   const { name, amount, id } = req.body;
 
   try {
-    const payment = await stripe.paymentIntents.create({
-      amount: amount,
-      currency: "BRL",
-      description: name,
-      payment_method: "card",
-      confirm: true,
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 2000,
+      currency: "brl",
+      payment_method_types: ["card"],
     });
-    console.log("Payment", payment);
+    console.log("Payment", paymentIntent);
     res.json({
       message: "Paymeny Success",
       success: true,

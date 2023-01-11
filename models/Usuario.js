@@ -54,6 +54,7 @@ const userSchema = new Schema({
       sold: Number,
       avaible: Number,
       rating: Number,
+      discount: Number,
     },
   ],
   pedidos: [
