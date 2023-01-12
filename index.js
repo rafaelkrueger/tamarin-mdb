@@ -41,7 +41,10 @@ const {
   setWishlistCostumer,
   removeWishlistCostumer,
 } = require("./controller/costumers-controller");
-const { removeInstagramFollowers } = require("./controller/socials-controller");
+const {
+  removeInstagramFollowers,
+  postStoriesEveryMorning,
+} = require("./controller/socials-controller");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -111,6 +114,7 @@ app.patch("/website-details-style", setWebsiteDetailsStyle);
 
 //socials handler routes
 app.post("/socials/remove-instagram-followers", removeInstagramFollowers);
+app.post("/socials/post-stories-every-morning", postStoriesEveryMorning);
 
 //payment handler routes
 app.post("/pix", getPix);
