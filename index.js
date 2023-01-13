@@ -12,6 +12,7 @@ const {
   updateUser,
   deleteUser,
   getEmpresa,
+  createUserLogo,
 } = require("./controller/user-controller");
 const { setMessage, home, news } = require("./controller/system-controller");
 const {
@@ -90,6 +91,7 @@ app.post("/set-user", setUser);
 app.post("/get-user", getUser);
 app.get("/all", allUsers);
 app.patch("/update-user", updateUser);
+app.post("/create-user-logo", createUserLogo);
 app.post("/delete-user", deleteUser);
 
 //costumers access rooutes
