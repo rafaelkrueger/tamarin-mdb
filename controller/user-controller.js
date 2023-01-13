@@ -130,16 +130,6 @@ const deleteUser = (req, res) => {
     });
 };
 
-const createUserLogo = async (req, res) => {
-  deepai.setApiKey("quickstart-QUdJIGlzIGNvbWluZy4uLi4K");
-  const newLogo = req.body.name;
-
-  var resp = await deepai.callStandardApi("logo-generator", {
-    text: newLogo,
-  });
-  res.send(resp.output_url);
-};
-
 const getEmpresa = (req, res) => {
   User.findOne({ site: req.params.site })
     .then((response) => {
@@ -156,6 +146,5 @@ module.exports = {
   allUsers,
   updateUser,
   deleteUser,
-  createUserLogo,
   getEmpresa,
 };
