@@ -33,28 +33,21 @@ const postStoriesEveryMorning = async (req, res) => {
   const ig = new IgApiClient();
   ig.state.generateDevice(username);
   await ig.account.login(username, password);
-
-  // Get the user ID for the account
   const userId = await ig.user.getIdByUsername(username);
 
-  // Get the last 6 posts from the user
   const feed = ig.feed.user(userId);
   const posts = await feed.items();
 
-  // Post each post to the account's stories
   for (let i = 0; i < 6; i++) {
     const post = posts[i];
     const imageUrl = post.image_versions2.candidates[0].url;
     const caption = post.caption;
-
-    //bglh de fazer buffer na image
 
     const imageBuffer = await get({
       url: imageUrl,
       encoding: null,
     });
 
-    // Upload the image to the account's story
     await ig.publish.story({
       file: imageBuffer,
       caption,

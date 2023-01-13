@@ -237,54 +237,47 @@ const boleto = async (req, res) => {
     client_secret: process.env.GN_CLIENT_SECRET,
     sandbox: false,
   };
-  const body = {
+  var chargeInput = {
+    items: [
+      {
+        name: "Compra Online",
+        value: 129.5 * 100,
+        amount: 1,
+      },
+    ],
     payment: {
       banking_billet: {
-        expire_at: "2023-01-15",
+        expire_at: "2023-01-25",
         customer: {
           name: name,
           email: email,
           cpf: cpf,
-          birth: "2002-11-25",
           phone_number: number,
         },
       },
     },
-    items: [
-      {
-        name: "Camiseta",
-        value: 2000,
-        amount: 2,
-      },
-    ],
-    shippings: [
-      {
-        name: "Default Shipping Cost",
-        value: 1000,
-      },
-    ],
   };
   var gerencianet = new Gerencianet(options);
   gerencianet
-    .createOneStepCharge([], body)
-    .then((response) => res.send(response))
-    .catch((err) => console.log(err.data.error_description));
-  // await insertPayment(
-  //   empresa,
-  //   name,
-  //   email,
-  //   cpf,
-  //   password,
-  //   number,
-  //   cep,
-  //   state,
-  //   hood,
-  //   city,
-  //   street,
-  //   streetNumber,
-  //   valor,
-  //   products
-  // );
+    .createOneStepCharge([], chargeInput)
+    .then((response) => console.log("boleto enviado!"))
+    .catch((err) => console.log(err));
+  await insertPayment(
+    empresa,
+    name,
+    email,
+    cpf,
+    password,
+    number,
+    cep,
+    state,
+    hood,
+    city,
+    street,
+    streetNumber,
+    valor,
+    products
+  );
 };
 
 const cardPayment = async (req, res) => {
