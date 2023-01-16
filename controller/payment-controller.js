@@ -294,7 +294,7 @@ const cardPayment = async (req, res) => {
       },
       async (err, token) => {
         const charge = await stripe.charges.create({
-          amount: amount,
+          amount: amount * 100,
           currency: "BRL",
           source: token.id,
           description: "tamarintec@gmail.com",
