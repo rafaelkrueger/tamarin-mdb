@@ -6,7 +6,7 @@ const path = require("path");
 const https = require("https");
 const mongoose = require("mongoose");
 const Gerencianet = require("gn-api-sdk-node");
-const stripe = require("stripe")(process.env.notteste);
+const stripe = require("stripe")(process.env.SK_LIVE_KEY);
 
 insertPayment = async (
   empresa,
