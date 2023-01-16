@@ -6,7 +6,7 @@ const path = require("path");
 const https = require("https");
 const mongoose = require("mongoose");
 const Gerencianet = require("gn-api-sdk-node");
-const stripe = require("stripe")(process.env.SK_LIVE_KEY);
+const stripe = require("stripe")(process.env.notteste);
 
 insertPayment = async (
   empresa,
@@ -282,16 +282,26 @@ const boleto = async (req, res) => {
 
 const cardPayment = async (req, res) => {
   try {
-    const { amount, token } = req.body;
-    // Create the charge using the Stripe API
-    const charge = await stripe.charges.create({
-      amount: amount,
-      currency: "BRL",
-      source: token,
-      description: "tamarintec@gmail.com",
-    });
-
-    res.json({ status: "success", charge: charge.receipt_url });
+    const { amount, number, expMonth, expYear, cvc } = req.body;
+    await stripe.tokens.create(
+      {
+        card: {
+          number: number,
+          exp_month: expMonth,
+          exp_year: expYear,
+          cvc: cvc,
+        },
+      },
+      async (err, token) => {
+        const charge = await stripe.charges.create({
+          amount: amount,
+          currency: "BRL",
+          source: token.id,
+          description: "tamarintec@gmail.com",
+        });
+        res.json({ status: "success", charge: charge.receipt_url });
+      }
+    );
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
