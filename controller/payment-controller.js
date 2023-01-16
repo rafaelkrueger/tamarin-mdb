@@ -281,25 +281,19 @@ const boleto = async (req, res) => {
 };
 
 const cardPayment = async (req, res) => {
-  const { name, amount, id } = req.body;
-
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: 2000,
-      currency: "brl",
-      payment_method_types: ["card"],
+    const { amount, token } = req.body;
+    // Create the charge using the Stripe API
+    const charge = await stripe.charges.create({
+      amount: amount,
+      currency: "BRL",
+      source: token,
+      description: "tamarintec@gmail.com",
     });
-    console.log("Payment", paymentIntent);
-    res.json({
-      message: "Paymeny Success",
-      success: true,
-    });
-  } catch (error) {
-    console.log("error", error.message);
-    res.json({
-      message: "payment Failed",
-      success: false,
-    });
+
+    res.json({ status: "success", charge: charge.receipt_url });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
   }
 };
 
