@@ -54,6 +54,7 @@ const postStoriesEveryMorning = async (req, res) => {
     });
     console.log(`Post ${i + 1} posted to stories`);
   }
+  res.send("Stories posted!");
 };
 
 module.exports = {
