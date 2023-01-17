@@ -147,7 +147,6 @@ const boleto = async (req, res) => {
     email,
     cpf,
     number,
-    valorTotal,
     empresa,
     password,
     cep,
@@ -163,11 +162,12 @@ const boleto = async (req, res) => {
     client_secret: process.env.GN_CLIENT_SECRET,
     sandbox: false,
   };
+  console.log(valor);
   var chargeInput = {
     items: [
       {
         name: "Compra Online",
-        value: valorTotal * 100,
+        value: valor * 100,
         amount: 1,
       },
     ],
@@ -203,7 +203,7 @@ const boleto = async (req, res) => {
   gerencianet
     .createOneStepCharge([], chargeInput)
     .then((response) => console.log("boleto enviado!"))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err.data));
 };
 
 const cardPayment = async (req, res) => {
