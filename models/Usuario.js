@@ -70,6 +70,7 @@ const userSchema = new Schema({
       hood: String,
       street: String,
       streetNumber: String,
+      trackcode: String,
       products: Array,
       valorTotal: Number,
     },
