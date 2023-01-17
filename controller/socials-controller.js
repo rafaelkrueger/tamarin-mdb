@@ -28,33 +28,36 @@ const removeInstagramFollowers = async (req, res) => {
 };
 
 const postStoriesEveryMorning = async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
+    const ig = new IgApiClient();
+    ig.state.generateDevice(username);
+    await ig.account.login(username, password);
+    const userId = await ig.user.getIdByUsername(username);
 
-  const ig = new IgApiClient();
-  ig.state.generateDevice(username);
-  await ig.account.login(username, password);
-  const userId = await ig.user.getIdByUsername(username);
+    const feed = ig.feed.user(userId);
+    const posts = await feed.items();
 
-  const feed = ig.feed.user(userId);
-  const posts = await feed.items();
+    for (let i = 0; i < 6; i++) {
+      const post = posts[i];
+      const imageUrl = post.image_versions2.candidates[0].url;
+      const caption = post.caption;
 
-  for (let i = 0; i < 6; i++) {
-    const post = posts[i];
-    const imageUrl = post.image_versions2.candidates[0].url;
-    const caption = post.caption;
+      const imageBuffer = await get({
+        url: imageUrl,
+        encoding: null,
+      });
 
-    const imageBuffer = await get({
-      url: imageUrl,
-      encoding: null,
-    });
-
-    await ig.publish.story({
-      file: imageBuffer,
-      caption,
-    });
-    console.log(`Post ${i + 1} posted to stories`);
+      await ig.publish.story({
+        file: imageBuffer,
+        caption,
+      });
+      console.log(`Post ${i + 1} posted to stories`);
+    }
+    res.send("Stories posted!");
+  } catch (err) {
+    console.log(err);
   }
-  res.send("Stories posted!");
 };
 
 module.exports = {
