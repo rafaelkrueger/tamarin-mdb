@@ -8,8 +8,8 @@ const home = (req, res) => {
 };
 
 const news = (req, res) => {
-  const newsPesquisa = "programming";
-  const news = `https://newsapi.org/v2/everything?q=${newsPesquisa}&apiKey=fdbb0b23c7fe482b9a98a00908ab4f98`;
+  const { search } = req.params;
+  const news = `https://newsapi.org/v2/everything?q=${search}&apiKey=fdbb0b23c7fe482b9a98a00908ab4f98`;
 
   axios
     .get(news)

@@ -82,7 +82,7 @@ app.set("views", "./views");
 //system routes
 app.get("/", home);
 app.post("/set-message", setMessage);
-app.get("/news", news);
+app.get("/news/:search", news);
 
 //user access routes
 app.get("/empresa/:site", getEmpresa);
