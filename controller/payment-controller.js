@@ -162,7 +162,6 @@ const boleto = async (req, res) => {
     client_secret: process.env.GN_CLIENT_SECRET,
     sandbox: false,
   };
-  console.log(valor);
   var chargeInput = {
     items: [
       {
