@@ -1,5 +1,6 @@
 require("dotenv").config();
 const User = require("../models/Usuario");
+const { insertOrder } = require("../services/pedidos-services");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
@@ -7,80 +8,6 @@ const https = require("https");
 const mongoose = require("mongoose");
 const Gerencianet = require("gn-api-sdk-node");
 const stripe = require("stripe")(process.env.SK_LIVE_KEY);
-
-insertPayment = async (
-  empresa,
-  name,
-  email,
-  cpf,
-  password,
-  number,
-  cep,
-  state,
-  city,
-  street,
-  streetNumber,
-  valor,
-  products
-) => {
-  const orderId = mongoose.Types.ObjectId();
-  User.updateOne(
-    { _id: empresa },
-    {
-      $addToSet: {
-        pedidos: {
-          _id: orderId,
-          name: name,
-          email: email,
-          cpf: cpf,
-          number: number,
-          cep: cep,
-          state: state,
-          city: city,
-          street: street,
-          streetNumber: streetNumber,
-          products: products,
-          valorTotal: valor,
-        },
-      },
-    }
-  )
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  User.updateOne(
-    { _id: empresa, "users.email": email },
-    {
-      $addToSet: {
-        "users.$.myPurchase": [
-          {
-            _id: orderId,
-            name: name,
-            email: email,
-            cpf: cpf,
-            number: number,
-            cep: cep,
-            state: state,
-            city: city,
-            street: street,
-            streetNumber: streetNumber,
-            products: products,
-            valorTotal: valor,
-          },
-        ],
-      },
-    }
-  )
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
 
 const cert = fs.readFileSync(
   path.resolve(__dirname, `../certs/${process.env.GN_CERT_PROD}`)
@@ -108,8 +35,8 @@ const getPix = async (req, res) => {
     city,
     street,
     streetNumber,
-    valor,
     products,
+    valor,
   } = req.body;
   const authResponse = await axios({
     method: "POST",
@@ -152,7 +79,7 @@ const getPix = async (req, res) => {
   const qrcodeResponse = await reqGN
     .get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`)
     .catch((err) => console.log(err));
-  await insertPayment(
+  await insertOrder(
     empresa,
     name,
     email,
@@ -167,6 +94,7 @@ const getPix = async (req, res) => {
     valor,
     products
   );
+
   res.end(
     JSON.stringify({ qrcode: qrcodeResponse.data.imagemQrcode, txid: cobId })
   );
@@ -215,22 +143,20 @@ const verifyPix = async (req, res) => {
 
 const boleto = async (req, res) => {
   const {
-    empresa,
     name,
     email,
     cpf,
-    password,
     number,
+    valorTotal,
+    empresa,
+    password,
     cep,
     state,
-    hood,
     city,
     street,
     streetNumber,
-    valor,
     products,
-    birth,
-    shipping,
+    valor,
   } = req.body;
   const options = {
     client_id: process.env.GN_CLIENT_ID,
@@ -241,7 +167,7 @@ const boleto = async (req, res) => {
     items: [
       {
         name: "Compra Online",
-        value: 129.5 * 100,
+        value: valorTotal * 100,
         amount: 1,
       },
     ],
@@ -257,12 +183,7 @@ const boleto = async (req, res) => {
       },
     },
   };
-  var gerencianet = new Gerencianet(options);
-  gerencianet
-    .createOneStepCharge([], chargeInput)
-    .then((response) => console.log("boleto enviado!"))
-    .catch((err) => console.log(err));
-  await insertPayment(
+  await insertOrder(
     empresa,
     name,
     email,
@@ -271,22 +192,46 @@ const boleto = async (req, res) => {
     number,
     cep,
     state,
-    hood,
     city,
     street,
     streetNumber,
     valor,
     products
   );
+
+  var gerencianet = new Gerencianet(options);
+  gerencianet
+    .createOneStepCharge([], chargeInput)
+    .then((response) => console.log("boleto enviado!"))
+    .catch((err) => console.log(err));
 };
 
 const cardPayment = async (req, res) => {
   try {
-    const { amount, number, expMonth, expYear, cvc } = req.body;
+    const {
+      amount,
+      number,
+      expMonth,
+      expYear,
+      cardNumber,
+      cvc,
+      name,
+      email,
+      cpf,
+      empresa,
+      password,
+      cep,
+      state,
+      city,
+      street,
+      streetNumber,
+      products,
+      valor,
+    } = req.body;
     await stripe.tokens.create(
       {
         card: {
-          number: number,
+          number: cardNumber,
           exp_month: expMonth,
           exp_year: expYear,
           cvc: cvc,
@@ -299,6 +244,21 @@ const cardPayment = async (req, res) => {
           source: token.id,
           description: "tamarintec@gmail.com",
         });
+        await insertOrder(
+          empresa,
+          name,
+          email,
+          cpf,
+          password,
+          number,
+          cep,
+          state,
+          city,
+          street,
+          streetNumber,
+          valor,
+          products
+        );
         res.json({ status: "success", charge: charge.receipt_url });
       }
     );
