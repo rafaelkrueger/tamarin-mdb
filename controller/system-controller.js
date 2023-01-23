@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const Message = require("../models/message");
+require("dotenv").config();
 
 const home = (req, res) => {
   res.send("funcionando");
@@ -9,8 +10,7 @@ const home = (req, res) => {
 
 const news = (req, res) => {
   const { search } = req.params;
-  const news = `https://newsapi.org/v2/everything?q=${search}&apiKey=fdbb0b23c7fe482b9a98a00908ab4f98`;
-
+  const news = `https://newsapi.org/v2/everything?q=${search}&apiKey=${process.env.NEWS_API}`;
   axios
     .get(news)
     .then((response) => {
@@ -19,6 +19,40 @@ const news = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+};
+
+const peexels = (req, res) => {
+  //peexels videos
+  axios({
+    method: "get",
+    url: `https://api.pexels.com/videos/search?query=${req.params.search}`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.PEEXELS_API}`,
+    },
+  })
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  //peexels images
+  axios({
+    method: "get",
+    url: `https://api.pexels.com/v1/search?query=${req.params.search}`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.PEEXELS_API}`,
+    },
+  })
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
 
@@ -39,5 +73,6 @@ const setMessage = (req, res) => {
 module.exports = {
   home,
   news,
+  peexels,
   setMessage,
 };

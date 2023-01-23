@@ -13,7 +13,12 @@ const {
   deleteUser,
   getEmpresa,
 } = require("./controller/user-controller");
-const { setMessage, home, news } = require("./controller/system-controller");
+const {
+  setMessage,
+  home,
+  news,
+  peexels,
+} = require("./controller/system-controller");
 const {
   deleteProduto,
   updateProduto,
@@ -83,6 +88,7 @@ app.set("views", "./views");
 app.get("/", home);
 app.post("/set-message", setMessage);
 app.get("/news/:search", news);
+app.get("/peexels/:search", peexels);
 
 //user access routes
 app.get("/empresa/:site", getEmpresa);
