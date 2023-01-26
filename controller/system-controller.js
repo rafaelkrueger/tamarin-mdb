@@ -27,7 +27,7 @@ const correios = (req, res) => {
   const { trackCode } = req.params;
   rastrearEncomendas([trackCode])
     .then((response) => {
-      console.log(response);
+      res.send(response[0].eventos);
     })
     .catch((err) => {
       console.log(err);
