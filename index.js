@@ -18,6 +18,7 @@ const {
   home,
   news,
   peexels,
+  correios,
 } = require("./controller/system-controller");
 const {
   deleteProduto,
@@ -37,7 +38,10 @@ const {
   cardPayment,
   boleto,
 } = require("./controller/payment-controller");
-const { patchPedido } = require("./controller/pedidos-controller");
+const {
+  patchPedido,
+  setTrackCode,
+} = require("./controller/pedidos-controller");
 const {
   deleteCostumer,
   createCostumer,
@@ -89,6 +93,7 @@ app.get("/", home);
 app.post("/set-message", setMessage);
 app.get("/news/:search", news);
 app.get("/peexels/:search", peexels);
+app.get("/rastreio/:trackCode", correios);
 
 //user access routes
 app.get("/empresa/:site", getEmpresa);
@@ -130,6 +135,7 @@ app.post("/card-payment", cardPayment);
 
 //pedidos handler routes
 app.patch("/pedido-entregue", patchPedido);
+app.post("/pedido-set-trackcode", setTrackCode);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);

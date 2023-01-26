@@ -14,6 +14,22 @@ const patchPedido = async (req, res) => {
     });
 };
 
+const setTrackCode = async (req, res) => {
+  const { empresa, id, trackcode } = req.body;
+
+  User.updateOne(
+    { _id: empresa, "pedidos._id": id },
+    { $set: { "pedidos.$.trackcode": trackcode } }
+  )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   patchPedido,
+  setTrackCode,
 };
