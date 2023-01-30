@@ -1,5 +1,3 @@
-const express = require("express");
-const router = express.Router();
 const User = require("../models/Usuario");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
@@ -122,9 +120,10 @@ const setProduto = async (req, res) => {
             },
             public_id: result.public_id,
             sold: 0,
-            avaible: avaible,
             rating: 0,
+            avaible: avaible,
             discount: discount,
+            comments: [],
           },
         },
       }
@@ -172,10 +171,37 @@ const deleteProduto = async (req, res) => {
     });
 };
 
+const setProdutoComment = (req, res) => {
+  try {
+    const { empresa, name, productId, image, title, comment, rating } =
+      req.body;
+    User.updateOne(
+      { _id: empresa, "produto._id": productId },
+      {
+        $: {
+          comments: {
+            image: image.charAt(0) == "h" ? image : "",
+            name: name,
+            title: title,
+            comment: comment,
+            rating: rating,
+            reviewd: "true",
+          },
+        },
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   setCategoria,
   deleteCategoria,
   setProduto,
   updateProduto,
   deleteProduto,
+  setProdutoComment,
 };

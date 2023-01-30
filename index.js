@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const path = require("path");
+const cron = require("node-cron");
 //controllers
 const {
   setUser,
@@ -26,6 +27,7 @@ const {
   setCategoria,
   setProduto,
   deleteCategoria,
+  setProdutoComment,
 } = require("./controller/products-controller");
 const {
   setWebsiteAllStyle,
@@ -54,11 +56,18 @@ const {
   removeInstagramFollowers,
   postStoriesEveryMorning,
 } = require("./controller/socials-controller");
+const {
+  setCupom,
+  getCupom,
+  removeCupom,
+} = require("./controller/cupom-controller");
+//cron functions
+const { postStoriesEveryDay } = require("./cron/instagram");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8083;
 
 //Database Connection
 conn();
@@ -117,6 +126,12 @@ app.post("/delete-categoria", deleteCategoria);
 app.post("/set-produto", setProduto);
 app.patch("/update-produto", updateProduto);
 app.post("/delete-produto", deleteProduto);
+app.post("/set-produto-comment", setProdutoComment);
+
+//cupoms handler routes
+app.post("/set-cupom", setCupom);
+app.get("/get-cupom/:empresa/:code", getCupom);
+app.delete("/remove-cupom", removeCupom);
 
 //website handler routes
 app.patch("/website-style", setWebsiteAllStyle);
@@ -136,6 +151,9 @@ app.post("/card-payment", cardPayment);
 //pedidos handler routes
 app.patch("/pedido-entregue", patchPedido);
 app.post("/pedido-set-trackcode", setTrackCode);
+
+//cron commands to run automatically
+cron.schedule("0 0 * * *", postStoriesEveryDay);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);

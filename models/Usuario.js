@@ -55,6 +55,16 @@ const userSchema = new Schema({
       avaible: Number,
       rating: Number,
       discount: Number,
+      comments: [
+        {
+          image: String,
+          name: String,
+          title: String,
+          comment: String,
+          rating: Number,
+          reviewd: String,
+        },
+      ],
     },
   ],
   pedidos: [
@@ -108,7 +118,13 @@ const userSchema = new Schema({
     websiteDetailedButtonCart: String,
     websiteDetailedButtonFontCart: String,
   },
-  cupom: Array,
+  cupom: [
+    {
+      code: String,
+      percentage: Number,
+      avaible: Number,
+    },
+  ],
 });
 
 const User = mongoose.model("user", userSchema);
