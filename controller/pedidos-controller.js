@@ -33,8 +33,8 @@ const getPedidoStatus = (req, res) => {
   const { id, empresa } = req.params;
 
   User.findOne({ _id: empresa, "pedidos._id": id })
-    .then((res) => {
-      console.log(res);
+    .then((response) => {
+      res.send(response);
     })
     .catch((err) => {
       console.log(err);
