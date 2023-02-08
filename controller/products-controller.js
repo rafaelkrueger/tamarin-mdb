@@ -171,30 +171,44 @@ const deleteProduto = async (req, res) => {
     });
 };
 
-const setProdutoComment = (req, res) => {
-  try {
-    const { empresa, name, productId, image, title, comment, rating } =
-      req.body;
-    User.updateOne(
-      { _id: empresa, "produto._id": productId },
-      {
-        $: {
-          comments: {
-            image: image.charAt(0) == "h" ? image : "",
-            name: name,
-            title: title,
-            comment: comment,
-            rating: rating,
-            reviewd: "true",
-          },
+const setProdutoComment = async (req, res) => {
+  const {
+    empresa,
+    name,
+    productId,
+    imageComment,
+    image,
+    title,
+    comment,
+    rating,
+  } = req.body;
+
+  const result =
+    image.charAt(0) != "h"
+      ? await cloudinary.uploader.upload(imageComment, {
+          folder: "samples",
+          resource_type: "auto",
+        })
+      : image;
+
+  User.updateOne(
+    { _id: empresa, "produto._id": productId },
+    {
+      $addToSet: {
+        "produto.$.comments": {
+          image: image.charAt(0) == "h" ? image : "",
+          imageComment: result.charAt(0) == "h" ? result.secure_url : "",
+          name: name,
+          title: title,
+          comment: comment,
+          rating: rating,
+          reviewd: "true",
         },
-      }
-    )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  } catch (err) {
-    console.log(err);
-  }
+      },
+    }
+  )
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 };
 
 module.exports = {

@@ -43,6 +43,7 @@ const {
 const {
   patchPedido,
   setTrackCode,
+  getPedidoStatus,
 } = require("./controller/pedidos-controller");
 const {
   deleteCostumer,
@@ -151,9 +152,10 @@ app.post("/card-payment", cardPayment);
 //pedidos handler routes
 app.patch("/pedido-entregue", patchPedido);
 app.post("/pedido-set-trackcode", setTrackCode);
+app.get("/pedido-status/:id/:empresa", getPedidoStatus);
 
 //cron commands to run automatically
-cron.schedule("0 0 * * *", postStoriesEveryDay);
+cron.schedule("0 0 0 * * *", postStoriesEveryDay);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);

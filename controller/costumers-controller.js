@@ -167,7 +167,9 @@ const removeWishlistCostumer = async (req, res) => {
     { $pull: { "users.$.wishList": { _id: product } } }
   )
     .then((response) => {
-      console.log(response);
+      if (!response) {
+        res.send(null);
+      }
     })
     .catch((err) => {
       console.log(err);

@@ -58,6 +58,7 @@ const userSchema = new Schema({
       comments: [
         {
           image: String,
+          imageComment: String,
           name: String,
           title: String,
           comment: String,
