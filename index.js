@@ -132,7 +132,7 @@ app.post("/set-produto-comment", setProdutoComment);
 //cupoms handler routes
 app.post("/set-cupom", setCupom);
 app.get("/get-cupom/:empresa/:code", getCupom);
-app.delete("/remove-cupom", removeCupom);
+app.patch("/remove-cupom", removeCupom);
 
 //website handler routes
 app.patch("/website-style", setWebsiteAllStyle);

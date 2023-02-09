@@ -7,6 +7,7 @@ const path = require("path");
 const https = require("https");
 const mongoose = require("mongoose");
 const Gerencianet = require("gn-api-sdk-node");
+const { subtractCupom } = require("../services/cupom-services");
 const stripe = require("stripe")(process.env.SK_LIVE_KEY);
 
 const cert = fs.readFileSync(
@@ -37,6 +38,8 @@ const getPix = async (req, res) => {
     streetNumber,
     products,
     valor,
+    idCupom,
+    avaible,
   } = req.body;
   const authResponse = await axios({
     method: "POST",
@@ -94,6 +97,9 @@ const getPix = async (req, res) => {
     valor,
     products
   );
+  if (idCupom) {
+    subtractCupom(empresa, idCupom, avaible);
+  }
 
   res.end(
     JSON.stringify({ qrcode: qrcodeResponse.data.imagemQrcode, txid: cobId })
@@ -156,6 +162,8 @@ const boleto = async (req, res) => {
     streetNumber,
     products,
     valor,
+    idCupom,
+    avaible,
   } = req.body;
   const options = {
     client_id: process.env.GN_CLIENT_ID,
@@ -197,7 +205,9 @@ const boleto = async (req, res) => {
     valor,
     products
   );
-
+  if (idCupom) {
+    subtractCupom(empresa, idCupom, avaible);
+  }
   var gerencianet = new Gerencianet(options);
   gerencianet
     .createOneStepCharge([], chargeInput)
@@ -226,6 +236,8 @@ const cardPayment = async (req, res) => {
       streetNumber,
       products,
       valor,
+      idCupom,
+      avaible,
     } = req.body;
     await stripe.tokens.create(
       {
@@ -258,6 +270,10 @@ const cardPayment = async (req, res) => {
           valor,
           products
         );
+        if (idCupom) {
+          subtractCupom(empresa, idCupom, avaible);
+        }
+
         res.json({ status: "success", charge: charge.receipt_url });
       }
     );
