@@ -82,6 +82,9 @@ const getPix = async (req, res) => {
   const qrcodeResponse = await reqGN
     .get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`)
     .catch((err) => console.log(err));
+  if (idCupom !== null) {
+    subtractCupom(empresa, idCupom, avaible);
+  }
   await insertOrder(
     empresa,
     name,
@@ -97,10 +100,6 @@ const getPix = async (req, res) => {
     valor,
     products
   );
-  if (idCupom) {
-    subtractCupom(empresa, idCupom, avaible);
-  }
-
   res.end(
     JSON.stringify({ qrcode: qrcodeResponse.data.imagemQrcode, txid: cobId })
   );

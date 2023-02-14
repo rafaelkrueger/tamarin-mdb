@@ -9,7 +9,9 @@ const subtractCupom = async (empresa, id, avaible) => {
         "cupom.$.avaible": avaible - 1,
       },
     }
-  );
+  ).then((response) => {
+    console.log(response);
+  });
 };
 
 module.exports = {
