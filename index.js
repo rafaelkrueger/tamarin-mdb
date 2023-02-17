@@ -63,7 +63,6 @@ const {
   removeCupom,
 } = require("./controller/cupom-controller");
 //cron functions
-const { postStoriesEveryDay } = require("./cron/instagram");
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
@@ -153,9 +152,6 @@ app.post("/card-payment", cardPayment);
 app.patch("/pedido-entregue", patchPedido);
 app.post("/pedido-set-trackcode", setTrackCode);
 app.get("/pedido-status/:id/:empresa", getPedidoStatus);
-
-//cron commands to run automatically
-cron.schedule("0 0 0 * * *", postStoriesEveryDay);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
