@@ -4,7 +4,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-const cron = require("node-cron");
+//socket server
+const http = require("http");
+const server = http.createServer(app);
+const io = require("socket.io")(server);
 //controllers
 const {
   setUser,
@@ -62,11 +65,13 @@ const {
   getCupom,
   removeCupom,
 } = require("./controller/cupom-controller");
+
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8083;
+const PORTSOCKET = process.env.PORT || 8084;
 
 //Database Connection
 conn();
@@ -90,6 +95,17 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   app.use(cors());
   next();
+});
+
+//socket
+io.on("connection", (socket) => {
+  console.log("A user connected:" + " " + socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+
+  // handle socket events here
 });
 
 //configuration
@@ -154,4 +170,8 @@ app.get("/pedido-status/:id/:empresa", getPedidoStatus);
 
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
+});
+
+server.listen(PORTSOCKET, () => {
+  console.log("Socket Funcionando na porta: " + PORTSOCKET);
 });

@@ -1,6 +1,5 @@
 const User = require("../models/Usuario");
 const cloudinary = require("cloudinary").v2;
-const fileupload = require("express-fileupload");
 const { IgApiClient } = require("instagram-private-api");
 const { get } = require("request-promise");
 

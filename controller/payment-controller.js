@@ -253,6 +253,16 @@ const cardPayment = async (req, res) => {
           currency: "BRL",
           source: token.id,
           description: "tamarintec@gmail.com",
+          // payment_method_options: {
+          //   card: {
+          //     installments: {
+          //       enabled: true,
+          //       plan: 'default',
+          //       // Allow payment in three installments
+          //       installments: 3,
+          //     },
+          //   },
+          // },
         });
         await insertOrder(
           empresa,
@@ -272,7 +282,6 @@ const cardPayment = async (req, res) => {
         if (idCupom) {
           subtractCupom(empresa, idCupom, avaible);
         }
-
         res.json({ status: "success", charge: charge.receipt_url });
       }
     );
