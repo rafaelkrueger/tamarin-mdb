@@ -62,7 +62,6 @@ const {
   getCupom,
   removeCupom,
 } = require("./controller/cupom-controller");
-//cron functions
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;

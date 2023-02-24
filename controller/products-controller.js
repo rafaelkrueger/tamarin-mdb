@@ -128,7 +128,7 @@ const setProduto = async (req, res) => {
         },
       }
     )
-      .then((res) => console.log(res))
+      .then((res) => res.send(200))
       .catch((err) => console.log(err));
   } catch (err) {
     console.log(err);
