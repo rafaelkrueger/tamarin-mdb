@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node index.js"
   },
+  "engines": {
+    "node": ">= 6.9.4",
+    "npm": ">= 4.4.0"
+  },
   "author": "Rafael Krueger",
   "license": "ISC",
   "dependencies": {
