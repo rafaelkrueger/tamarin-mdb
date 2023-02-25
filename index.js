@@ -4,10 +4,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-//socket server
-const http = require("http");
-const server = http.createServer(app);
-const io = require("socket.io")(server);
 //controllers
 const {
   setUser,
@@ -65,6 +61,7 @@ const {
   getCupom,
   removeCupom,
 } = require("./controller/cupom-controller");
+//cron functions
 
 //connection
 const conn = require("./connection");
@@ -96,17 +93,6 @@ app.use((req, res, next) => {
   app.use(cors());
   next();
 });
-
-//socket
-// io.on("connection", (socket) => {
-//   console.log("A user connected:" + " " + socket.id);
-
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected");
-//   });
-
-//   // handle socket events here
-// });
 
 //configuration
 app.set("view engine", "ejs");
@@ -171,7 +157,3 @@ app.get("/pedido-status/:id/:empresa", getPedidoStatus);
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
 });
-
-// server.listen(PORTSOCKET, () => {
-//   console.log("Socket Funcionando na porta: " + PORTSOCKET);
-// });

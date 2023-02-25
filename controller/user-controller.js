@@ -54,17 +54,10 @@ const setUser = async (req, res) => {
       },
       cupom: cupomArray,
     });
-    newUser
-      .save((err, message) => {
-        if (err) console.log(err);
-        console.log(message);
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    newUser.save((err, message) => {
+      if (err) console.log(err);
+      console.log(message);
+    });
   } catch (error) {
     console.log(error);
   }
@@ -129,6 +122,7 @@ const deleteUser = (req, res) => {
   User.deleteOne({ _id: id })
     .then((response) => {
       res.send(response);
+      console.log(response);
     })
     .catch((err) => {
       console.log(err);
