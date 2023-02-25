@@ -157,5 +157,3 @@ app.get("/pedido-status/:id/:empresa", getPedidoStatus);
 app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
 });
-
-//no sockets
