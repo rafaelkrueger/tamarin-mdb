@@ -172,6 +172,6 @@ app.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
 });
 
-server.listen(PORTSOCKET, () => {
-  console.log("Socket Funcionando na porta: " + PORTSOCKET);
-});
+// server.listen(PORTSOCKET, () => {
+//   console.log("Socket Funcionando na porta: " + PORTSOCKET);
+// });
