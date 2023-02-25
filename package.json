@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "dev": "react-scripts start",
+    "start": "serve -s build",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Rafael Krueger",
   "license": "ISC",
@@ -31,6 +36,7 @@
     "puppeteer": "^19.6.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
+    "serve": "^14.2.0",
     "socket.io": "^4.6.1",
     "stripe": "^10.15.0"
   }
