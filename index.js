@@ -71,7 +71,7 @@ const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8083;
-const PORTSOCKET = process.env.PORT || 8084;
+// const PORTSOCKET = process.env.PORT || 8084;
 
 //Database Connection
 conn();
@@ -98,15 +98,15 @@ app.use((req, res, next) => {
 });
 
 //socket
-io.on("connection", (socket) => {
-  console.log("A user connected:" + " " + socket.id);
+// io.on("connection", (socket) => {
+//   console.log("A user connected:" + " " + socket.id);
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
+//   socket.on("disconnect", () => {
+//     console.log("User disconnected");
+//   });
 
-  // handle socket events here
-});
+//   // handle socket events here
+// });
 
 //configuration
 app.set("view engine", "ejs");
