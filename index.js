@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const path = require("path");
+var server = require("http").createServer(app);
 //controllers
 const {
   setUser,
@@ -61,14 +62,32 @@ const {
   getCupom,
   removeCupom,
 } = require("./controller/cupom-controller");
-//cron functions
+
+//socket functions
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`⚡: ${socket.id} user just connected!`);
+  const allData = [];
+
+  socket.on("sendMessage", (data) => {
+    socket.broadcast.emit("messageUpload", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("🔥: A user disconnected");
+  });
+});
 
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8083;
-// const PORTSOCKET = process.env.PORT || 8084;
 
 //Database Connection
 conn();
@@ -154,6 +173,6 @@ app.patch("/pedido-entregue", patchPedido);
 app.post("/pedido-set-trackcode", setTrackCode);
 app.get("/pedido-status/:id/:empresa", getPedidoStatus);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("Funcionando na porta: " + PORT);
 });
