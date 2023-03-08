@@ -9,6 +9,14 @@ const userSchema = new Schema({
   email: String,
   number: String,
   site: String,
+  messages: [
+    {
+      _id: String,
+      image: String,
+      name: String,
+      messages: [{ _id: String, message: String }],
+    },
+  ],
   users: [
     {
       _id: Schema.ObjectId,
@@ -88,7 +96,6 @@ const userSchema = new Schema({
     },
   ],
   orcamento: Array,
-  message: Array,
   website: {
     websiteNavbarFooterColor: String,
     websiteFontFooterColor: String,

@@ -5,6 +5,8 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 var server = require("http").createServer(app);
+//models
+const User = require("./models/Usuario");
 //controllers
 const {
   setUser,
@@ -72,14 +74,37 @@ const io = require("socket.io")(server, {
 
 io.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
-  const allData = [];
 
-  socket.on("sendMessage", (data) => {
+  socket.on("sendMessage", async (data) => {
+    await User.updateOne(
+      { _id: data.empresa },
+      {
+        $addToSet: {
+          messages: {
+            _id: socket.id,
+            image: data.image,
+            name: data.sender,
+            messages: [{ _id: data.sender, message: data.message }],
+          },
+        },
+      }
+    )
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
     socket.broadcast.emit("messageUpload", data);
   });
 
-  socket.on("disconnect", () => {
-    console.log("🔥: A user disconnected");
+  socket.on("disconnect", async () => {
+    const hasMessage = await User.findOne({ "messages.$._id": socket.id });
+    if (hasMessage) {
+      User.updateOne(
+        { "messages._id": socket.id },
+        { $pull: { messages: { _id: socket.id } } }
+      )
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+      console.log("🔥: A user disconnected");
+    }
   });
 });
 
