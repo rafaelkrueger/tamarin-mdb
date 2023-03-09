@@ -76,22 +76,42 @@ io.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
   socket.on("sendMessage", async (data) => {
-    await User.updateOne(
-      { _id: data.empresa },
-      {
-        $addToSet: {
-          messages: {
-            _id: socket.id,
-            image: data.image,
-            name: data.sender,
-            messages: [{ _id: data.sender, message: data.message }],
-          },
+    const result = await User.findOne({
+      messages: {
+        $elemMatch: {
+          _id: socket.id,
         },
-      }
-    )
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
-    socket.broadcast.emit("messageUpload", data);
+      },
+    });
+    if (!result && data.sender == "") {
+      await User.updateOne(
+        { _id: data.empresa },
+        {
+          $addToSet: {
+            messages: {
+              _id: socket.id,
+              image: data.image,
+              name: data.sender,
+              messages: [{ _id: data.sender, message: data.message }],
+            },
+          },
+        }
+      )
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    } else {
+      await User.updateOne(
+        { _id: data.empresa, "messages._id": data.id },
+        {
+          $addToSet: {
+            "messages.$.messages": { _id: data.sender, message: data.message },
+          },
+        }
+      )
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    }
+    socket.to(data.id).emit("messageUpload", data);
   });
 
   socket.on("disconnect", async () => {
