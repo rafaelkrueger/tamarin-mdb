@@ -111,6 +111,7 @@ io.on("connection", (socket) => {
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
     }
+    console.log(data);
     socket.to(data.id).emit("messageUpload", data);
   });
 
