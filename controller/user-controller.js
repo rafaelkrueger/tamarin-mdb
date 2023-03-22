@@ -56,7 +56,7 @@ const setUser = async (req, res) => {
     });
     newUser.save((err, message) => {
       if (err) console.log(err);
-      console.log(message);
+      res.send(200);
     });
   } catch (error) {
     console.log(error);
