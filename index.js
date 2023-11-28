@@ -133,7 +133,6 @@ io.on("connection", (socket) => {
 //connection
 const conn = require("./connection");
 const cloudinary = require("cloudinary").v2;
-const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8083;
 
 //Database Connection
@@ -152,7 +151,6 @@ app.set("views", "./views");
 app.use(bodyParser.json({ limit: "100000mb" }));
 app.use(bodyParser.urlencoded({ limit: "100000mb", extended: true }));
 app.use(express.static(path.join(__dirname, "views")));
-app.use(fileupload({ useTempFiles: true }));
 app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
