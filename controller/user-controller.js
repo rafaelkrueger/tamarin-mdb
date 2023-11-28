@@ -32,8 +32,8 @@ const setUser = async (req, res) => {
     let MessageArray = [];
     let cupomArray = [];
     const newUser = new User({
-      logo: logoImaage.url,
-      logo_id: logoImaage._id,
+      logo: logoImaage?logoImaage.url:'',
+      logo_id: logoImaage?logoImaage._id:'',
       name: name,
       email: email,
       password: password,
