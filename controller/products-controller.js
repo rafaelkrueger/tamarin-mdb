@@ -42,63 +42,71 @@ const setProduto = async (req, res) => {
       instaPassword,
       publish,
     } = req.body;
+    let result;
+    if(image){
+     result =
+        image.charAt(0) != "h"
+          ? await cloudinary.uploader.upload(image, {
+              folder: "samples",
+              resource_type: "auto",
+            })
+          : image;
+    }
+    let sub1;
+    let sub2;
+    let sub3;
+    let sub4;
 
-    const result =
-      image.charAt(0) != "h"
-        ? await cloudinary.uploader.upload(image, {
+    if(subImages){
+     sub1 = subImages.subI1
+        ? await cloudinary.uploader.upload(subImages.subI1, {
             folder: "samples",
             resource_type: "auto",
           })
-        : image;
+        : "";
 
-    const sub1 = subImages.subI1
-      ? await cloudinary.uploader.upload(subImages.subI1, {
-          folder: "samples",
-          resource_type: "auto",
-        })
-      : "";
+     sub2 = subImages.subI2
+        ? await cloudinary.uploader.upload(subImages.subI2, {
+            folder: "samples",
+            resource_type: "auto",
+          })
+        : "";
 
-    const sub2 = subImages.subI2
-      ? await cloudinary.uploader.upload(subImages.subI2, {
-          folder: "samples",
-          resource_type: "auto",
-        })
-      : "";
+      sub3 = subImages.subI3
+        ? await cloudinary.uploader.upload(subImages.subI3, {
+            folder: "samples",
+            resource_type: "auto",
+          })
+        : "";
 
-    const sub3 = subImages.subI3
-      ? await cloudinary.uploader.upload(subImages.subI3, {
-          folder: "samples",
-          resource_type: "auto",
-        })
-      : "";
-
-    const sub4 = subImages.subI4
-      ? await cloudinary.uploader.upload(subImages.subI4, {
-          folder: "samples",
-          resource_type: "auto",
-        })
-      : "";
-
-    const postToInsta = async () => {
-      const ig = new IgApiClient();
-      ig.state.generateDevice(instaUsername);
-      await ig.account.login(instaUsername, instaPassword);
-      const imageBuffer = await get({
-        url: result.secure_url,
-        encoding: null,
-      });
-      await ig.publish.photo({
-        file: imageBuffer,
-        caption: description,
-      });
-      await ig.publish.story({
-        file: imageBuffer,
-        caption: description,
-      });
-    };
-    if (publish) {
-      await postToInsta();
+      sub4 = subImages.subI4
+        ? await cloudinary.uploader.upload(subImages.subI4, {
+            folder: "samples",
+            resource_type: "auto",
+          })
+        : "";
     }
+
+    // const postToInsta = async () => {
+    //   const ig = new IgApiClient();
+    //   ig.state.generateDevice(instaUsername);
+    //   await ig.account.login(instaUsername, instaPassword);
+    //   const imageBuffer = await get({
+    //     url: result.secure_url,
+    //     encoding: null,
+    //   });
+    //   await ig.publish.photo({
+    //     file: imageBuffer,
+    //     caption: description,
+    //   });
+    //   await ig.publish.story({
+    //     file: imageBuffer,
+    //     caption: description,
+    //   });
+    // };
+    // if (publish) {
+    //   await postToInsta();
+    // }
 
     User.updateOne(
       { _id: empresa },
@@ -110,12 +118,12 @@ const setProduto = async (req, res) => {
             category: category,
             value: value,
             options: options,
-            image: image.charAt(0) != "h" ? result.secure_url : result,
+            image: image? image.charAt(0) != "h" ? result.secure_url : result:'',
             subImages: {
-              subImage1: sub1.secure_url,
-              subImage2: sub2.secure_url,
-              subImage3: sub3.secure_url,
-              subImage4: sub4.secure_url,
+              subImage1: sub1?sub1.secure_url:'',
+              subImage2: sub1?sub2.secure_url:'',
+              subImage3: sub1?sub3.secure_url:'',
+              subImage4: sub1?sub4.secure_url:'',
             },
             public_id: result.public_id,
             sold: 0,
