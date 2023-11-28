@@ -290,9 +290,66 @@ const cardPayment = async (req, res) => {
   }
 };
 
+async function monthlySubscription(customerEmail, paymentMethodId) {
+  try {
+    const customer = await stripe.customers.create({
+      email: customerEmail,
+      payment_method: paymentMethodId,
+      invoice_settings: {
+        default_payment_method: paymentMethodId,
+      },
+    });
+
+    const token = await stripe.tokens.create(
+      {
+        card: {
+          number: cardNumber,
+          exp_month: expMonth,
+          exp_year: expYear,
+          cvc: cvc,
+        },
+      },
+      async (err, token) => {
+        const charge = await stripe.charges.create({
+          amount: 490,
+          currency: "BRL",
+          source: token.id,
+          description: "tamarintec@gmail.com",
+        });
+        res.json({ status: "success", charge: charge.receipt_url });
+      }
+    );
+
+    const product = await stripe.products.create({
+      name: 'Your Product Name',
+      type: 'service',
+    });
+
+    const price = await stripe.prices.create({
+      unit_amount: 490, // Amount in cents (4.90 BRL)
+      currency: 'brl',
+      recurring: {
+        interval: 'month',
+      },
+      product: product.id,
+    });
+
+    const subscription = await stripe.subscriptions.create({
+      customer: customer.id,
+      items: [{ price: price.id }],
+      expand: ['latest_invoice.payment_intent'],
+    });
+
+    console.log('Monthly subscription created:', subscription);
+  } catch (error) {
+    console.error('Error creating subscription:', error);
+  }
+}
+
 module.exports = {
   getPix,
   boleto,
   verifyPix,
   cardPayment,
+  monthlySubscription
 };
