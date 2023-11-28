@@ -17,11 +17,13 @@ const setUser = async (req, res) => {
       instaUsername,
       instaPassword,
     } = req.body;
-    console.log("endpoint accessed")
-    const result = await cloudinary.uploader.upload(logo, {
-      folder: "tamarin-companies",
-      resource_type: "auto",
-    });
+    let logoImaage;
+    if(logo){
+      logoImaage = await cloudinary.uploader.upload(logo, {
+        folder: "tamarin-companies",
+        resource_type: "auto",
+      });
+    }
 
     let UserArray = [];
     let ProdutoArray = [];
