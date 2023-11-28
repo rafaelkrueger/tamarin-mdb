@@ -125,7 +125,7 @@ const setProduto = async (req, res) => {
               subImage3: sub1?sub3.secure_url:'',
               subImage4: sub1?sub4.secure_url:'',
             },
-            public_id: result.public_id,
+            public_id: result?result.public_id:'',
             sold: 0,
             rating: 0,
             avaible: avaible,
