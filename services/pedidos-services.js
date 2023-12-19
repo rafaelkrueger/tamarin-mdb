@@ -17,6 +17,7 @@ const insertOrder = async (
   products
 ) => {
   const orderId = mongoose.Types.ObjectId();
+  const currentDate = new Date();
   User.updateOne(
     { _id: empresa },
     {
@@ -35,6 +36,13 @@ const insertOrder = async (
           trackcode: "",
           products: products,
           valorTotal: valor,
+        },
+      },
+      $addToSet: {
+        orcamento: {
+          _id: orderId,
+          date:`${currentDate.getDay()}/${currentDate.getMonth()}/${currentDate.getYear()}`,
+          quantity:valor
         },
       },
     }
