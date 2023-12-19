@@ -42,7 +42,7 @@ const insertOrder = async (
       $addToSet: {
         orcamento: {
           _id: orderId,
-          date:`${currentDate.getDay()}/${currentDate.getMonth()}/${currentDate.getYear()}`,
+          date:`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`,
           quantity:valor
         },
       },
