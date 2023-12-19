@@ -18,6 +18,7 @@ const insertOrder = async (
 ) => {
   const orderId = mongoose.Types.ObjectId();
   const currentDate = new Date();
+  console.log(`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`)
   User.updateOne(
     { _id: empresa },
     {
