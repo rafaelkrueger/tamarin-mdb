@@ -188,7 +188,6 @@ app.post("/set-wishlist-costumer", setWishlistCostumer);
 app.put("/remove-wishlist-costumer", removeWishlistCostumer);
 
 //products handler routes
-//get of products to specific  enterprise
 app.post("/set-categoria", setCategoria);
 app.post("/delete-categoria", deleteCategoria);
 app.post("/set-produto", setProduto);
